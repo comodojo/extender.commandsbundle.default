@@ -61,15 +61,19 @@ class execute implements CommandInterface {
 
 	}
 
-	public function exec() {
+	public function execute() {
 
 		$task = $this->getArgument('task');
 
-		if ( array_key_exists($task, $this->tasks) == false ) throw new ShellException("Task is not registered");
+		if ( $this->tasks->isTaskRegistered($task) == false ) throw new ShellException("Task is not registered");
 
-		if ( file_exists($this->tasks[$task]['target']) === false ) throw new ShellException("Task file does not exists");
+		$task_target = $this->tasks->getTarget($task);
 
-		if ( (include($this->tasks[$task]['target'])) === false ) throw new ShellException("Task file cannot be included");
+		if ( is_null($task_target) ) throw new ShellException("Task target not available");
+
+		if ( file_exists($task_target) === false ) throw new ShellException("Task file does not exists");
+
+		if ( (include($task_target)) === false ) throw new ShellException("Task file cannot be included");
 
 		print "\nExecuting task ".$task."...\n"; 
 
@@ -115,9 +119,7 @@ class execute implements CommandInterface {
 
 		$parameters = array();
 
-		$task = $task;
-
-		$class = $this->tasks[$task]['class'];
+		$class = $this->tasks->getClass($task);
 
 		$task_class = "\\Comodojo\\Extender\\Task\\".$class;
 

@@ -10,7 +10,7 @@ class tasks implements CommandInterface {
 
 	private $color = null;
 
-	private $tasks = array();
+	private $tasks = null;
 
 	public function setOptions($options) {
 
@@ -60,11 +60,11 @@ class tasks implements CommandInterface {
 
 	}
 
-	public function exec() {
+	public function execute() {
 
 		$return = "\nAvailable tasks:\n\n";
 
-		foreach ($this->tasks as $task => $parameters) {
+		foreach ($this->tasks->getTasks() as $task => $parameters) {
 			
 			$return .= "- ".$this->color->convert("%g".$task."%n")." (".$parameters["target"]."): ".( empty($parameters["description"]) ? "No description available" : $parameters["description"] );
 

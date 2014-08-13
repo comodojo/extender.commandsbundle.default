@@ -63,7 +63,7 @@ class jobs implements CommandInterface {
 
 	}
 
-	public function exec() {
+	public function execute() {
 
 		try {
 

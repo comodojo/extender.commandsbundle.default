@@ -61,7 +61,7 @@ class add implements CommandInterface {
 
 	}
 
-	public function exec() {
+	public function execute() {
 
 		$enable = $this->getOption("enable");
 
@@ -81,7 +81,7 @@ class add implements CommandInterface {
 
 		try {
 			
-			list($id, $next_calculated_run) = Scheduler::addSchedule($expression, $name, $task, $description, $params);
+			list($id, $next_calculated_run) = Scheduler::addSchedule($expression, $name, $task, $description, $parameters);
 
 			if ( $enable ) Scheduler::enableSchedule($name);
 

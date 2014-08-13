@@ -61,7 +61,7 @@ class disable implements CommandInterface {
 
 	}
 
-	public function exec() {
+	public function execute() {
 
 		$name = $this->getArgument("name");
 

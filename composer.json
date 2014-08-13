@@ -1,5 +1,5 @@
 {
-    "name": "comodojo/extender.servicebundle.default",
+    "name": "comodojo/extender.commandsbundle.default",
     "description": "Default commands for extender econtrol",
     "license": "GPL-3.0+",
     "type": "extender-commands-bundle",

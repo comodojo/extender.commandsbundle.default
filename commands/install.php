@@ -63,7 +63,7 @@ class install implements CommandInterface {
 
     }
 
-    public function exec() {
+    public function execute() {
 
         $force = $this->getOption("force");
 
