@@ -21,7 +21,7 @@ class add implements CommandInterface {
 
 	}
 
-	public function setArgs($args) {
+	public function setArguments($args) {
 
 		$this->args = $args;
 
@@ -53,7 +53,7 @@ class add implements CommandInterface {
 
 	}
 
-	public function getArg($arg) {
+	public function getArgument($arg) {
 
 		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
 
@@ -65,17 +65,17 @@ class add implements CommandInterface {
 
 		$enable = $this->getOption("enable");
 
-		$expression = $this->getArg("expression");
+		$expression = $this->getArgument("expression");
 
-		$name = $this->getArg("name");
+		$name = $this->getArgument("name");
 
-		$task = $this->getArg("task");
+		$task = $this->getArgument("task");
 
-		$description = $this->getArg("description");
+		$description = $this->getArgument("description");
 
 		$description = is_null($description) ? '' : $description;
 
-		$parameters = $this->getArg("parameters");
+		$parameters = $this->getArgument("parameters");
 
 		$parameters = is_null($parameters) ? array() : $parameters;
 

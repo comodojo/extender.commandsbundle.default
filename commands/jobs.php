@@ -23,7 +23,7 @@ class jobs implements CommandInterface {
 
 	}
 
-	public function setArgs($args) {
+	public function setArguments($args) {
 
 		$this->args = $args;
 
@@ -55,7 +55,7 @@ class jobs implements CommandInterface {
 
 	}
 
-	public function getArg($arg) {
+	public function getArgument($arg) {
 
 		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
 

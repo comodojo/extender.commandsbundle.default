@@ -21,7 +21,7 @@ class del implements CommandInterface {
 
 	}
 
-	public function setArgs($args) {
+	public function setArguments($args) {
 
 		$this->args = $args;
 
@@ -53,7 +53,7 @@ class del implements CommandInterface {
 
 	}
 
-	public function getArg($arg) {
+	public function getArgument($arg) {
 
 		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
 
@@ -63,7 +63,7 @@ class del implements CommandInterface {
 
 	public function exec() {
 
-		$name = $this->getArg("name");
+		$name = $this->getArgument("name");
 
 		try {
 			
