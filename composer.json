@@ -152,7 +152,7 @@
     },
     "autoload": {
         "psr-4": {
-             "Comodojo\\Extender\\Shell\\Commands\\": "commands"
+             "Comodojo\\Extender\\Command\\": "commands"
          }
     },
     "require": {

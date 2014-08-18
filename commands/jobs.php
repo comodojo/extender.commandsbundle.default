@@ -1,4 +1,4 @@
-<?php namespace Comodojo\Extender\Shell\Commands;
+<?php namespace Comodojo\Extender\Command;
 
 use \Comodojo\Exception\ShellException;
 use \Console_Table;
@@ -96,7 +96,7 @@ class jobs implements CommandInterface {
 				$job["task"],
 				$description,
 				$this->color->convert($job["enabled"] ? "%gYES%n" : "%rNO%n"),
-				$job["lastrun"]
+				empty($job["lastrun"]) ? $this->color->convert("%rNEVER%n") : date("r", (int)$job["lastrun"])
 			));
 
 		}

@@ -1,4 +1,4 @@
-<?php namespace Comodojo\Extender\Shell\Commands;
+<?php namespace Comodojo\Extender\Command;
 
 use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
