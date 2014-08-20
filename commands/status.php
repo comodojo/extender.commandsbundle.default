@@ -3,7 +3,7 @@
 use \Comodojo\Exception\ShellException;
 use \Console_Table;
 
-class jobs implements CommandInterface {
+class status implements CommandInterface {
 
 	private $options = null;
 
@@ -75,15 +75,19 @@ class jobs implements CommandInterface {
 			
 			$pid = self::pushUsrEvent($lockfile);
 
+			sleep(1);
+
 			$status = self::readStatus($statusfile);
 
-			self::displayStatus($pid, $status);
+			$return = self::displayStatus($pid, $status, $this->color);
 
 		} catch (ShellException $se) {
 			
 			throw $se;
 
 		}
+
+		return $return;
 
 	}
 
@@ -111,24 +115,24 @@ class jobs implements CommandInterface {
 
 	}
 
-	static private function displayStatus($pid, $status) {
+	static private function displayStatus($pid, $status, $color) {
 		
 		$return = "\n *** Extender Status Resume *** \n";
 		$return .= "  ------------------------------ \n\n";
 
-		$return .= " - Process PID: ".$this->color->convert("%g".$pid."%n")."\n";
-		$return .= " - Process running since: ".$this->color->convert("%g".date("c", (int)$status["STARTED"])."%n")."\n";
-		$return .= " - Process runtime (sec): ".$this->color->convert("%g".$status["TIME"]."%n")."\n\n";
+		$return .= " - Process PID: ".$color->convert("%g".$pid."%n")."\n";
+		$return .= " - Process running since: ".$color->convert("%g".date("r", (int)$status["STARTED"])."%n")."\n";
+		$return .= " - Process runtime (sec): ".$color->convert("%g".(int)$status["TIME"]."%n")."\n\n";
 
-		$return .= " - Completed jobs: ".$this->color->convert("%g".$status["COMPLETED"]."%n")."\n";
-		$return .= " - Failed jobs: ".$this->color->convert("%r".$status["FAILED"]."%n")."\n\n";
+		$return .= " - Completed jobs: ".$color->convert("%g".$status["COMPLETED"]."%n")."\n";
+		$return .= " - Failed jobs: ".$color->convert("%r".$status["FAILED"]."%n")."\n\n";
 
-		$return .= " - Current CPI load (avg): ".$this->color->convert("%g".implode(", ", $status["CPUAVG"])."%n")."\n";
-		$return .= " - Allocated memory (real): ".$this->color->convert("%g".self::convert($status["MEM"])."%n")."\n";
-		$return .= " - Allocated memory (peak): ".$this->color->convert("%g".self::convert($status["MEMPEAK"])."%n")."\n\n";
+		$return .= " - Current CPI load (avg): ".$color->convert("%g".implode(", ", $status["CPUAVG"])."%n")."\n";
+		$return .= " - Allocated memory (real): ".$color->convert("%g".self::convert($status["MEM"])."%n")."\n";
+		$return .= " - Allocated memory (peak): ".$color->convert("%g".self::convert($status["MEMPEAK"])."%n")."\n\n";
 
-		$return .= " - User: ".$this->color->convert("%g".$status["USER"]."%n")."\n";
-		$return .= " - Niceness: ".$this->color->convert("%g".$status["NICENESS"]."%n")."\n\n";
+		$return .= " - User: ".$color->convert("%g".$status["USER"]."%n")."\n";
+		$return .= " - Niceness: ".$color->convert("%g".$status["NICENESS"]."%n")."\n\n";
 
 		return $return;
 
