@@ -147,6 +147,12 @@
                         "description": "Job name"
                     }
                 }
+            },
+            "status": {
+                "description": "Get extender status (if in daemon mode)",
+                "aliases": ["st"],
+                "options": {},
+                "arguments": {}
             }
         }
     },
