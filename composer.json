@@ -48,7 +48,7 @@
             },
             "execute": {
                 "description": "Execute a tasks without invoking extender",
-                "aliases": ["ex","exec"],
+                "aliases": ["exe","exec"],
                 "options": {},
                 "arguments": {
                     "task": {
@@ -61,13 +61,20 @@
             },
             "jobs": {
                 "description": "List scheduled jobs",
-                "aliases": ["job","jb"],
-                "options": {},
+                "aliases": ["job"],
+                "options": {
+                    "extensive": {
+                        "short_name": "-e",
+                        "long_name": "--extensive",
+                        "action": "StoreTrue",
+                        "description": "Show extensive informations"
+                    }
+                },
                 "arguments": {}
             },
             "add": {
                 "description": "Add a job to scheduler",
-                "aliases": ["ad"],
+                "aliases": [],
                 "options": {
                     "enable": {
                         "short_name": "-e",
@@ -111,7 +118,7 @@
             },
             "del": {
                 "description": "Delete a job",
-                "aliases": ["de"],
+                "aliases": [],
                 "options": {},
                 "arguments": {
                     "name": {
@@ -124,7 +131,7 @@
             },
             "enable": {
                 "description": "Enable a job",
-                "aliases": ["en"],
+                "aliases": ["ena"],
                 "options": {},
                 "arguments": {
                     "name": {
@@ -137,7 +144,7 @@
             },
             "disable": {
                 "description": "Disable a job",
-                "aliases": ["di"],
+                "aliases": ["dis"],
                 "options": {},
                 "arguments": {
                     "name": {
@@ -153,6 +160,39 @@
                 "aliases": ["st"],
                 "options": {},
                 "arguments": {}
+            },
+            "export": {
+                "description": "Export whole job list to file",
+                "aliases": ["exp"],
+                "options": {},
+                "arguments": {
+                    "destination": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": false,
+                        "description": "Destination file"
+                    }
+                }
+            },
+            "import": {
+                "description": "Import job list from file",
+                "aliases": ["imp"],
+                "options": {
+                    "clean": {
+                        "short_name": "-c",
+                        "long_name": "--clean",
+                        "action": "StoreTrue",
+                        "description": "Delete existent jobs first"
+                    }
+                },
+                "arguments": {
+                    "source": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": false,
+                        "description": "Source file"
+                    }
+                }
             }
         }
     },

@@ -3,63 +3,7 @@
 use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
 
-class add implements CommandInterface {
-
-	private $options = null;
-
-	private $args = null;
-
-	private $color = null;
-
-	private $tasks = array();
-
-	public function setOptions($options) {
-
-		$this->options = $options;
-
-		return $this;
-
-	}
-
-	public function setArguments($args) {
-
-		$this->args = $args;
-
-		return $this;
-
-	}
-
-	public function setColor($color) {
-
-		$this->color = $color;
-
-		return $this;
-
-	}
-
-	public function setTasks($tasks) {
-
-		$this->tasks = $tasks;
-
-		return $this;
-
-	}
-
-	public function getOption($option) {
-
-		if ( array_key_exists($option, $this->options) ) return $this->options[$option];
-
-		else return null;
-
-	}
-
-	public function getArgument($arg) {
-
-		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
-
-		else return null;
-
-	}
+class add extends StandardCommand implements CommandInterface {
 
 	public function execute() {
 
@@ -75,9 +19,7 @@ class add implements CommandInterface {
 
 		$description = is_null($description) ? '' : $description;
 
-		$parameters = $this->getArgument("parameters");
-
-		$parameters = is_null($parameters) ? array() : $parameters;
+		$parameters = self::processParameters($this->color, $this->getArgument("parameters"));
 
 		try {
 			
@@ -94,6 +36,45 @@ class add implements CommandInterface {
 		if ( $enable ) return $this->color->convert("\n%gJob added and activated; next calculated runtime: ".$next_calculated_run."%n");
 
 		else return $this->color->convert("\n%gJob added but not activated.%n");
+
+	}
+
+	static private function processParameters($color, $parameters) {
+
+		$params = array();
+
+		if ( !is_null($parameters) ) {
+
+			$p = explode(";", trim($parameters));
+
+			foreach ($p as $parameter) {
+				
+				$ps = explode("=", $parameter);
+
+				if ( sizeof($ps) == 2 ) {
+
+					// if ( is_numeric($ps[1]) ) $value = (int)$ps[1];
+
+					// if ( is_bool($ps[1]) ) $value = filter_var($ps[1], FILTER_VALIDATE_BOOLEAN);
+
+					// if ( is_null($ps[1]) ) $value = null;
+
+					//else $value = $ps[1];
+
+					$value = $ps[1];
+
+					$params[$ps[0]] = $value;
+
+				}
+
+				else echo $color->convert("\n%ySkipping invalid parameter: ".$parameter."%n");
+
+			}
+
+
+		}
+
+		return $params;
 
 	}
 

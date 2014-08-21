@@ -3,67 +3,11 @@
 use \Comodojo\Exception\ShellException;
 use \Console_Table;
 
-class status implements CommandInterface {
-
-	private $options = null;
-
-	private $args = null;
-
-	private $color = null;
-
-	private $tasks = array();
+class status extends StandardCommand implements CommandInterface {
 
 	static private $lockfile = "extender.pid";
 
 	static private $statusfile = "extender.status";
-
-	public function setOptions($options) {
-
-		$this->options = $options;
-
-		return $this;
-
-	}
-
-	public function setArguments($args) {
-
-		$this->args = $args;
-
-		return $this;
-
-	}
-
-	public function setColor($color) {
-
-		$this->color = $color;
-
-		return $this;
-
-	}
-
-	public function setTasks($tasks) {
-
-		$this->tasks = $tasks;
-
-		return $this;
-
-	}
-
-	public function getOption($option) {
-
-		if ( array_key_exists($option, $this->options) ) return $this->options[$option];
-
-		else return null;
-
-	}
-
-	public function getArgument($arg) {
-
-		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
-
-		else return null;
-
-	}
 
 	public function execute() {
 
@@ -127,7 +71,7 @@ class status implements CommandInterface {
 		$return .= " - Completed jobs: ".$color->convert("%g".$status["COMPLETED"]."%n")."\n";
 		$return .= " - Failed jobs: ".$color->convert("%r".$status["FAILED"]."%n")."\n\n";
 
-		$return .= " - Current CPI load (avg): ".$color->convert("%g".implode(", ", $status["CPUAVG"])."%n")."\n";
+		$return .= " - Current CPU load (avg): ".$color->convert("%g".implode(", ", $status["CPUAVG"])."%n")."\n";
 		$return .= " - Allocated memory (real): ".$color->convert("%g".self::convert($status["MEM"])."%n")."\n";
 		$return .= " - Allocated memory (peak): ".$color->convert("%g".self::convert($status["MEMPEAK"])."%n")."\n\n";
 

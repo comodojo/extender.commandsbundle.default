@@ -5,65 +5,11 @@ use \Console_Table;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 
-class jobs implements CommandInterface {
-
-	private $options = null;
-
-	private $args = null;
-
-	private $color = null;
-
-	private $tasks = array();
-
-	public function setOptions($options) {
-
-		$this->options = $options;
-
-		return $this;
-
-	}
-
-	public function setArguments($args) {
-
-		$this->args = $args;
-
-		return $this;
-
-	}
-
-	public function setColor($color) {
-
-		$this->color = $color;
-
-		return $this;
-
-	}
-
-	public function setTasks($tasks) {
-
-		$this->tasks = $tasks;
-
-		return $this;
-
-	}
-
-	public function getOption($option) {
-
-		if ( array_key_exists($option, $this->options) ) return $this->options[$option];
-
-		else return null;
-
-	}
-
-	public function getArgument($arg) {
-
-		if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];
-
-		else return null;
-
-	}
+class jobs extends StandardCommand implements CommandInterface {
 
 	public function execute() {
+
+		$extensive = $this->getOption("extensive");
 
 		try {
 
@@ -75,33 +21,9 @@ class jobs implements CommandInterface {
 
         }
 
-		$tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
+        if ( $extensive ) return self::extensive($this->color, $jobs);
 
-		$tbl->setHeaders(array(
-			'Expression',
-			'Name',
-			'Task',
-			'Description',
-			'Enabled',
-			'Lastrun'
-		));
-
-		foreach ($jobs as $job) {
-
-			$description = strlen($job["description"]) >= 60 ? substr($job["description"],0,60)."..." : $job["description"];
-
-			$tbl->addRow(array(
-				implode(" ",array($job["min"],$job["hour"],$job["dayofmonth"],$job["month"],$job["dayofweek"],$job["year"])),
-				$job["name"],
-				$job["task"],
-				$description,
-				$this->color->convert($job["enabled"] ? "%gYES%n" : "%rNO%n"),
-				empty($job["lastrun"]) ? $this->color->convert("%rNEVER%n") : date("r", (int)$job["lastrun"])
-			));
-
-		}
-
-		return $return = "\nAvailable jobs:\n\n".$tbl->getTable();
+        else return self::brief($this->color, $jobs);
 
 	}
 
@@ -138,6 +60,70 @@ class jobs implements CommandInterface {
 
 		return $result['data'];
 		
+	}
+
+	static private function brief($color, $jobs) {
+
+		$tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
+
+		$tbl->setHeaders(array(
+			'Expression',
+			'Name',
+			'Task',
+			'Description',
+			'Enabled'
+		));
+
+		foreach ($jobs as $job) {
+
+			$description = strlen($job["description"]) >= 60 ? substr($job["description"],0,60)."..." : $job["description"];
+
+			$tbl->addRow(array(
+				implode(" ",array($job["min"],$job["hour"],$job["dayofmonth"],$job["month"],$job["dayofweek"],$job["year"])),
+				$job["name"],
+				$job["task"],
+				$description,
+				$color->convert($job["enabled"] ? "%gYES%n" : "%rNO%n"),
+			));
+
+		}
+
+		return $return = "\nAvailable jobs:\n---------------\n\n".$tbl->getTable();
+
+	}
+
+	static private function extensive($color, $jobs) {
+
+		$return = "\nAvailable jobs:\n---------------\n\n";
+
+		foreach ($jobs as $job) {
+
+			$tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
+
+			$tbl->addRow(array("Name",$job["name"]));
+
+			$tbl->addSeparator();
+
+			$tbl->addRow(array("Expression",implode(" ",array($job["min"],$job["hour"],$job["dayofmonth"],$job["month"],$job["dayofweek"],$job["year"]))));
+
+			$tbl->addRow(array("Task",$job["task"]));
+
+			$tbl->addRow(array("Description",$job["description"]));
+
+			$tbl->addRow(array("Enabled",$color->convert($job["enabled"] ? "%gYES%n" : "%rNO%n")));
+
+			$tbl->addRow(array("Lastrun",empty($job["lastrun"]) ? $color->convert("%rNEVER%n") : date("r", (int)$job["lastrun"])));
+
+			$tbl->addSeparator();
+
+			$tbl->addRow(array("Parameters",var_export(unserialize($job["params"]), true)));
+
+			$return .= $tbl->getTable()."\n\n";
+
+		}
+
+		return $return;
+
 	}
 
 }
