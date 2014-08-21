@@ -83,15 +83,15 @@ class import extends StandardCommand implements CommandInterface {
 
 			$db->tablePrefix(EXTENDER_DATABASE_PREFIX)
                 ->table(EXTENDER_DATABASE_TABLE_JOBS)
-                ->keys(array("id","name","task","description",
+                ->keys(array("id","name","task","description","enabled",
 					"min","hour","dayofmonth","month","dayofweek","year",
-					"params","enabled"));
+					"params","lastrun"));
 
             foreach ($jobs as $job) {
 
-            	$db->values(array($job["id"],$job["name"],$job["task"],$job["description"],
+            	$db->values(array($job["id"],$job["name"],$job["task"],$job["description"],$job["enabled"],
 					$job["min"],$job["hour"],$job["dayofmonth"],$job["month"],$job["dayofweek"],$job["year"],
-					$job["params"],$job["enabled"]));
+					$job["params"],NULL));
 
             }
                 
