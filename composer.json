@@ -43,7 +43,14 @@
             "tasks": {
                 "description": "List available tasks",
                 "aliases": ["task","tk"],
-                "options": {},
+                "options": {
+                    "extensive": {
+                        "short_name": "-e",
+                        "long_name": "--extensive",
+                        "action": "StoreTrue",
+                        "description": "Show task target (full path)"
+                    }
+                },
                 "arguments": {}
             },
             "execute": {

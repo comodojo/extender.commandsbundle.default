@@ -6,11 +6,15 @@ class tasks extends StandardCommand implements CommandInterface {
 
 	public function execute() {
 
-		$return = "\nAvailable tasks:\n\n";
+		$extensive = $this->getOption("extensive");
+
+		$return = "\nAvailable tasks:\n---------------\n\n";
 
 		foreach ($this->tasks->getTasks() as $task => $parameters) {
 			
-			$return .= "- ".$this->color->convert("%g".$task."%n")." (".$parameters["target"]."): ".( empty($parameters["description"]) ? "No description available" : $parameters["description"] );
+			if ( $extensive ) $return .= "- ".$this->color->convert("%g".$task."%n")." (".$parameters["target"]."): ".( empty($parameters["description"]) ? "No description available" : $parameters["description"] );
+
+			else $return .= "- ".$this->color->convert("%g".$task."%n").": ".( empty($parameters["description"]) ? "No description available" : $parameters["description"] );
 
 		}
 
