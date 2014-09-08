@@ -11,6 +11,8 @@ class status extends StandardCommand implements CommandInterface {
 
 	public function execute() {
 
+		if ( \Comodojo\Extender\Checks::signals() === false ) throw new ShellException("This version of PHP does not support pnctl");
+
 		$lockfile = EXTENDER_CACHE_FOLDER.self::$lockfile;
 
 		$statusfile = EXTENDER_CACHE_FOLDER.self::$statusfile;
@@ -68,6 +70,7 @@ class status extends StandardCommand implements CommandInterface {
 		$return .= " - Process running since: ".$color->convert("%g".date("r", (int)$status["STARTED"])."%n")."\n";
 		$return .= " - Process runtime (sec): ".$color->convert("%g".(int)$status["TIME"]."%n")."\n\n";
 
+		$return .= " - Current Status: ". ( $status["RUNNING"] == 1 ? $color->convert("%gRUNNING%n") : $color->convert("%yPAUSED%n") )."\n";
 		$return .= " - Completed jobs: ".$color->convert("%g".$status["COMPLETED"]."%n")."\n";
 		$return .= " - Failed jobs: ".$color->convert("%r".$status["FAILED"]."%n")."\n\n";
 

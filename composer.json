@@ -168,6 +168,18 @@
                 "options": {},
                 "arguments": {}
             },
+            "pause": {
+                "description": "Pause extender (if running and in daemon mode)",
+                "aliases": ["pau"],
+                "options": {},
+                "arguments": {}
+            },
+            "resume": {
+                "description": "Resume extender (if paused and in daemon mode)",
+                "aliases": ["st"],
+                "options": {},
+                "arguments": {}
+            },
             "export": {
                 "description": "Export whole job list to file",
                 "aliases": ["exp"],
