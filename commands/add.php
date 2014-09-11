@@ -45,7 +45,7 @@ class add extends StandardCommand implements CommandInterface {
 
 		if ( !is_null($parameters) ) {
 
-			$p = explode(";", trim($parameters));
+			$p = explode(",", trim($parameters));
 
 			foreach ($p as $parameter) {
 				
