@@ -21,6 +21,12 @@
     ],
     "extra": {
         "comodojo-commands-register": {
+            "check": {
+                "description": "Perform multiple checks on system configuration",
+                "aliases": [],
+                "options": {},
+                "arguments": {}
+            },
             "install": {
                 "description": "Perform first installation task",
                 "aliases": ["inst","in"],
@@ -159,6 +165,38 @@
                         "multiple": false,
                         "optional": false,
                         "description": "Job name"
+                    }
+                }
+            },
+            "worklogs": {
+                "description": "Display worklogs table",
+                "aliases": ["wrks"],
+                "options": {},
+                "arguments": {
+                    "howmany": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": true,
+                        "description": "Number of worklogs to fetch"
+                    },
+                    "from": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": true,
+                        "description": "Worklog (num) to start from"
+                    }
+                }
+            },
+            "worklog": {
+                "description": "Display detailed information about a worklog",
+                "aliases": ["wrk"],
+                "options": {},
+                "arguments": {
+                    "id": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": false,
+                        "description": "ID of worklog to retrieve"
                     }
                 }
             },
