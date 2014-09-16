@@ -15,9 +15,9 @@ class worklogs extends StandardCommand implements CommandInterface {
 
 		$extensive = $this->getOption("extensive");
 
-		$limit = ( is_null($howmany) || !is_int($howmany) ) ? 10 : $howmany;
+		$limit = is_null($howmany) ? 10 : intval($howmany);
 
-		$offset = ( is_null($from) || !is_int($from) ) ? 0 : $from;
+		$offset = is_null($from) ? 0 : intval($from);
 
 		try{
 
