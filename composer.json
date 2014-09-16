@@ -170,8 +170,15 @@
             },
             "worklogs": {
                 "description": "Display worklogs table",
-                "aliases": ["wrks"],
-                "options": {},
+                "aliases": ["wrks","wkls"],
+                "options": {
+                    "extensive": {
+                        "short_name": "-e",
+                        "long_name": "--extensive",
+                        "action": "StoreTrue",
+                        "description": "Show extensive informations"
+                    }
+                },
                 "arguments": {
                     "howmany": {
                         "choices": {},
@@ -189,7 +196,7 @@
             },
             "worklog": {
                 "description": "Display detailed information about a worklog",
-                "aliases": ["wrk"],
+                "aliases": ["wrk","wkl"],
                 "options": {},
                 "arguments": {
                     "id": {

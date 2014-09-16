@@ -13,6 +13,8 @@ class worklogs extends StandardCommand implements CommandInterface {
 
 		$from = $this->getArgument("from");
 
+		$extensive = $this->getOption("extensive");
+
 		$limit = ( is_null($howmany) || !is_int($howmany) ) ? 10 : $howmany;
 
 		$offset = ( is_null($from) || !is_int($from) ) ? 0 : $from;
@@ -30,17 +32,32 @@ class worklogs extends StandardCommand implements CommandInterface {
 
 		$tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
 
-		$tbl->setHeaders(array(
-			"ID",
-			"Status",
-			"PID",
-			"Name",
-			"Task",
-			"Start",
-			"End",
-			"S",
-			"Result"
-		));
+		if ( is_null($extensive) ) {
+
+			$tbl->setHeaders(array(
+				"ID",
+				"Status",
+				"Name",
+				"Start",
+				"End",
+				"S"
+			));
+
+		} else {
+
+			$tbl->setHeaders(array(
+				"ID",
+				"Status",
+				"PID",
+				"Name",
+				"Task",
+				"Start",
+				"End",
+				"S",
+				"Result"
+			));
+
+		}
 
 		foreach ($worklogs["data"] as $worklog) {
 
@@ -54,17 +71,32 @@ class worklogs extends StandardCommand implements CommandInterface {
 
 			$success = $this->color->convert( $worklog["success"] == true ? "%gV%n" : "%rX%n" );
 
-			$tbl->addRow(array(
-				$worklog["id"],
-				$status,
-				$worklog["pid"],
-				$worklog["name"],
-				$worklog["task"],
-				$start,
-				$end,
-				$success,
-				$result
-			));
+			if ( is_null($extensive) ) {
+
+				$tbl->addRow(array(
+					$worklog["id"],
+					$status,
+					$worklog["name"],
+					$start,
+					$end,
+					$success
+				));
+
+			} else {
+
+				$tbl->addRow(array(
+					$worklog["id"],
+					$status,
+					$worklog["pid"],
+					$worklog["name"],
+					$worklog["task"],
+					$start,
+					$end,
+					$success,
+					$result
+				));
+
+			}
 
 		}
 
