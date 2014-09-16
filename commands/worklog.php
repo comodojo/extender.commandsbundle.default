@@ -9,13 +9,13 @@ class worklog extends StandardCommand implements CommandInterface {
 
 	public function execute() {
 
-		$wkid = $this->getOption("id");
+		$wkid = $this->getArgument("id");
 
 		if ( is_null($wkid) ) throw new ShellException("Invalid worklog id");
 		
 		try{
 
-			$worklog = self::getWorklog();
+			$worklog = self::getWorklog($wkid);
 
 		}
 		catch (\Exception $e) {
@@ -60,7 +60,7 @@ class worklog extends StandardCommand implements CommandInterface {
 
 	}
 
-	static private function getWorklog() {
+	static private function getWorklog($wkid) {
 		
 		try{
 

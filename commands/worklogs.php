@@ -9,9 +9,9 @@ class worklogs extends StandardCommand implements CommandInterface {
 
 	public function execute() {
 
-		$howmany = $this->getOption("howmany");
+		$howmany = $this->getArgument("howmany");
 
-		$from = $this->getOption("from");
+		$from = $this->getArgument("from");
 
 		$limit = ( is_null($howmany) || !is_int($howmany) ) ? 10 : $howmany;
 

@@ -39,7 +39,7 @@ class status extends StandardCommand implements CommandInterface {
 
 	static private function pushUsrEvent($lockfile) {
 	
-		$pid = file_get_contents($lockfile);
+		$pid = @file_get_contents($lockfile);
 
 		if ( $pid === false ) throw new ShellException("Extender not running or not in daemon mode");
 
