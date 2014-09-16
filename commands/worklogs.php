@@ -117,11 +117,14 @@ class worklogs extends StandardCommand implements CommandInterface {
 				EXTENDER_DATABASE_PASS
 			);
 
-			$result = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
-				->table(EXTENDER_DATABASE_TABLE_WORKLOGS)
-				->keys(array("id","pid","name","task",
-					"status","success","result","start","end"))
-				->get($limit, $offset);
+			$db->tablePrefix(EXTENDER_DATABASE_PREFIX)
+                            ->table(EXTENDER_DATABASE_TABLE_WORKLOGS)
+                            ->keys(array("id","pid","name","task",
+                                    "status","success","result","start","end"));
+
+                        if ( $offset == 0 ) $db->orderBy("id","DESC");
+
+                        $result = $db->get($limit, $offset);
 
 		}
 		catch (DatabaseException $de) {
