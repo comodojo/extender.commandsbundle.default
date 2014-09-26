@@ -44,7 +44,7 @@ class jobs extends StandardCommand implements CommandInterface {
 				->table(EXTENDER_DATABASE_TABLE_JOBS)
 				->keys(array("id","name","task","description",
 					"min","hour","dayofmonth","month","dayofweek","year",
-					"params","lastrun","enabled"))
+					"params","lastrun","firstrun","enabled"))
 				->get();
 
 		}
@@ -113,6 +113,8 @@ class jobs extends StandardCommand implements CommandInterface {
 			$tbl->addRow(array("Enabled",$color->convert($job["enabled"] ? "%gYES%n" : "%rNO%n")));
 
 			$tbl->addRow(array("Lastrun",empty($job["lastrun"]) ? $color->convert("%rNEVER%n") : date("r", (int)$job["lastrun"])));
+
+			$tbl->addRow(array("Firstrun", date("r", (int)$job["firstrun"])));
 
 			$tbl->addSeparator();
 

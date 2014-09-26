@@ -79,6 +79,7 @@ class install extends StandardCommand implements CommandInterface {
             $jobs_column_year        = new Column('year','STRING');
             $jobs_column_params      = new Column('params','TEXT');
             $jobs_column_lastrun     = new Column('lastrun','INTEGER');
+            $jobs_column_firstrun    = new Column('firstrun','INTEGER');
 
             $jobs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
                ->column($jobs_column_id->unsigned()->autoIncrement()->primaryKey())
@@ -94,6 +95,7 @@ class install extends StandardCommand implements CommandInterface {
                ->column($jobs_column_year->length(16)->defaultValue(null))
                ->column($jobs_column_params->defaultValue(null))
                ->column($jobs_column_lastrun->length(64)->defaultValue(null))
+               ->column($jobs_column_firstrun->length(64)->notNull())
                ->create(EXTENDER_DATABASE_TABLE_JOBS, true);
 
             // $db->clean();
