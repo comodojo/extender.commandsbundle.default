@@ -69,6 +69,12 @@
                         "multiple": false,
                         "optional": false,
                         "description": "Task to execute"
+                    },
+                    "parameters": {
+                        "choices": {},
+                        "multiple": false,
+                        "optional": true,
+                        "description": "A comma separated, not spaced, [option]=[value] parameters' list"
                     }
                 }
             },
