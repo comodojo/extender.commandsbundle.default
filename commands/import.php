@@ -3,18 +3,42 @@
 use \Comodojo\Exception\ShellException;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
+use \Comodojo\Extender\Scheduler\Scheduler;
+
+/**
+ * An extender command (default bundle)
+ *
+ * @package     Comodojo extender
+ * @author      Marco Giovinazzi <info@comodojo.org>
+ * @license     GPL-3.0+
+ *
+ * LICENSE:
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class import extends StandardCommand implements CommandInterface {
 
-	public function execute() {
+    public function execute() {
 
-		$source = $this->getArgument("source");
+        $source = $this->getArgument("source");
 
-		$clean = $this->getOption("clean");
+        $clean = $this->getOption("clean");
 
-		try {
+        try {
 
-			if ( $clean ) self::truncate();
+            if ( $clean ) self::truncate();
 
             $jobs = file_get_contents($source);
 
@@ -24,7 +48,7 @@ class import extends StandardCommand implements CommandInterface {
 
             if ( $data === false ) throw new ShellException("Invalid source file");
 
-            $count = self::uploadJobs($data);
+            $count = self::uploadJobs($data, $this->color);
            
         } catch (DatabaseException $de) {
 
@@ -36,80 +60,76 @@ class import extends StandardCommand implements CommandInterface {
 
         }
 
-		return $count .  " jobs imported in database";
+        return "\n--------------------\n\n".$count .  " job(s) imported in database";
 
-	}
+    }
 
-	static private function truncate() {
-		
-		try{
+    static private function truncate() {
+        
+        echo "\nCleaning jobs table... ";
 
-			$db = new EnhancedDatabase(
-				EXTENDER_DATABASE_MODEL,
-				EXTENDER_DATABASE_HOST,
-				EXTENDER_DATABASE_PORT,
-				EXTENDER_DATABASE_NAME,
-				EXTENDER_DATABASE_USER,
-				EXTENDER_DATABASE_PASS
-			);
+        try{
 
-			$db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_JOBS)->truncate();
+            $db = new EnhancedDatabase(
+                EXTENDER_DATABASE_MODEL,
+                EXTENDER_DATABASE_HOST,
+                EXTENDER_DATABASE_PORT,
+                EXTENDER_DATABASE_NAME,
+                EXTENDER_DATABASE_USER,
+                EXTENDER_DATABASE_PASS
+            );
 
-		}
-		catch (DatabaseException $e) {
+            $db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_JOBS)->truncate();
 
-			unset($db);
+        }
+        catch (DatabaseException $e) {
 
-			throw $e;
+            unset($db);
 
-		}
-		
-		unset($db);
-		
-	}
+            echo "error!\n";
 
-	static private function uploadJobs($jobs) {
-		
-		try{
+            throw $e;
 
-			$db = new EnhancedDatabase(
-				EXTENDER_DATABASE_MODEL,
-				EXTENDER_DATABASE_HOST,
-				EXTENDER_DATABASE_PORT,
-				EXTENDER_DATABASE_NAME,
-				EXTENDER_DATABASE_USER,
-				EXTENDER_DATABASE_PASS
-			);
+        }
+        
+        unset($db);
 
-			$db->tablePrefix(EXTENDER_DATABASE_PREFIX)
-                ->table(EXTENDER_DATABASE_TABLE_JOBS)
-                ->keys(array("id","name","task","description","enabled",
-					"min","hour","dayofmonth","month","dayofweek","year",
-					"params","lastrun"));
+        echo "done!\n";
 
-            foreach ($jobs as $job) {
+    }
 
-            	$db->values(array($job["id"],$job["name"],$job["task"],$job["description"],$job["enabled"],
-					$job["min"],$job["hour"],$job["dayofmonth"],$job["month"],$job["dayofweek"],$job["year"],
-					$job["params"],NULL));
+    static private function uploadJobs($jobs, $color) {
+        
+        $imported = 0;
+
+        foreach ($jobs as $job) {
+            
+            $expression = $job["min"]." ".$job["hour"]." ".$job["dayofmonth"]." ".$job["month"]." ".$job["dayofweek"]." ".$job["year"];
+
+            try {
+
+                $parameters = unserialize($job["params"]);
+            
+                list($id, $next_calculated_run) = Scheduler::addSchedule($expression, $job["name"], $job["task"], $job["description"], $parameters);
+
+                if ( $job["enabled"] ) Scheduler::enableSchedule($job["name"]);
+
+            } catch (Exception $e) {
+                
+                echo "\n";
+                echo $color->convert( "%rError importing job ".$job["name"]."(id:".$job["id"]."): ".$e->getMessage()."%n" );
 
             }
-                
-            $result = $db->store();
 
-		}
-		catch (DatabaseException $e) {
+            $imported++;
 
-			unset($db);
+            echo "\n";
+            echo $color->convert( "%gJob ".$job["name"]." imported; next run date: ".$next_calculated_run."%n" );
 
-			throw $e;
+        }
 
-		}
-		
-		unset($db);
-
-		return $result['affected_rows'];
-		
-	}
+        return $imported;
+        
+    }
 
 }

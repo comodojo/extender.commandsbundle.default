@@ -4,13 +4,36 @@ use \Comodojo\Exception\ShellException;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 
+/**
+ * An extender command (default bundle)
+ *
+ * @package     Comodojo extender
+ * @author      Marco Giovinazzi <info@comodojo.org>
+ * @license     GPL-3.0+
+ *
+ * LICENSE:
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 class export extends StandardCommand implements CommandInterface {
 
-	public function execute() {
+    public function execute() {
 
-		$destination = $this->getArgument("destination");
+        $destination = $this->getArgument("destination");
 
-		try {
+        try {
 
             $jobs = self::getJobs();
 
@@ -30,43 +53,43 @@ class export extends StandardCommand implements CommandInterface {
 
         }
 
-		return count($jobs) .  " jobs exported to " . $destination;
+        return count($jobs) .  " jobs exported to " . $destination;
 
-	}
+    }
 
-	static private function getJobs() {
-		
-		try{
+    static private function getJobs() {
+        
+        try{
 
-			$db = new EnhancedDatabase(
-				EXTENDER_DATABASE_MODEL,
-				EXTENDER_DATABASE_HOST,
-				EXTENDER_DATABASE_PORT,
-				EXTENDER_DATABASE_NAME,
-				EXTENDER_DATABASE_USER,
-				EXTENDER_DATABASE_PASS
-			);
+            $db = new EnhancedDatabase(
+                EXTENDER_DATABASE_MODEL,
+                EXTENDER_DATABASE_HOST,
+                EXTENDER_DATABASE_PORT,
+                EXTENDER_DATABASE_NAME,
+                EXTENDER_DATABASE_USER,
+                EXTENDER_DATABASE_PASS
+            );
 
-			$result = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
-				->table(EXTENDER_DATABASE_TABLE_JOBS)
-				->keys(array("id","name","task","description",
-					"min","hour","dayofmonth","month","dayofweek","year",
-					"params","enabled"))
-				->get();
+            $result = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
+                ->table(EXTENDER_DATABASE_TABLE_JOBS)
+                ->keys(array("id","name","task","description",
+                    "min","hour","dayofmonth","month","dayofweek","year",
+                    "params","enabled"))
+                ->get();
 
-		}
-		catch (DatabaseException $e) {
+        }
+        catch (DatabaseException $e) {
 
-			unset($db);
+            unset($db);
 
-			throw $e;
+            throw $e;
 
-		}
-		
-		unset($db);
+        }
+        
+        unset($db);
 
-		return $result['data'];
-		
-	}
+        return $result['data'];
+        
+    }
 
 }
