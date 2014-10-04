@@ -270,8 +270,5 @@
         "psr-4": {
              "Comodojo\\Extender\\Command\\": "commands"
          }
-    },
-    "require": {
-        "comodojo/extender.framework": "dev-master"
     }
 }
