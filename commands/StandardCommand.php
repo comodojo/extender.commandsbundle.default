@@ -25,14 +25,41 @@
 
 class StandardCommand {
 
+    /**
+     * Array of commandline options
+     *
+     * @var array
+     */
     protected $options = null;
 
+    /**
+     * Array of commandline arguments
+     *
+     * @var array
+     */
     protected $args = null;
 
+    /**
+     * Internal pointer to ConsoleColor object
+     *
+     * @var object
+     */
     protected $color = null;
 
+    /**
+     * Array of registered tasks
+     *
+     * @var array
+     */
     protected $tasks = array();
 
+    /**
+     * Set options
+     *
+     * @param   array   $options    Provided options (if any)
+     *
+     * @return  Object  $this
+     */
     public function setOptions($options) {
 
         $this->options = $options;
@@ -41,6 +68,13 @@ class StandardCommand {
 
     }
 
+    /**
+     * Set arguments
+     *
+     * @param   array   $args       Provided arguments (if any)
+     *
+     * @return  Object  $this
+     */
     public function setArguments($args) {
 
         $this->args = $args;
@@ -49,6 +83,13 @@ class StandardCommand {
 
     }
 
+    /**
+     * Inject Console_Color2 instance
+     *
+     * @param   Object  $color     The Console_Color2 instance
+     *
+     * @return  Object  $this
+     */
     public function setColor($color) {
 
         $this->color = $color;
@@ -57,6 +98,13 @@ class StandardCommand {
 
     }
 
+    /**
+     * Set registered tasks
+     *
+     * @param   \Comodojo\Extender\Task\TasksTable   $tasks     TaskTable
+     *
+     * @return  Object  $this
+     */
     public function setTasks($tasks) {
 
         $this->tasks = $tasks;
@@ -65,6 +113,13 @@ class StandardCommand {
 
     }
 
+    /**
+     * Get an option
+     *
+     * @param   string  $option    The option to search for
+     *
+     * @return  string
+     */
     public function getOption($option) {
 
         if ( array_key_exists($option, $this->options) ) return $this->options[$option];
@@ -73,6 +128,13 @@ class StandardCommand {
 
     }
 
+    /**
+     * Get an argument
+     *
+     * @param   string  $arg       The argument to search for
+     *
+     * @return  string
+     */
     public function getArgument($arg) {
 
         if ( array_key_exists($arg, $this->args) ) return $this->args[$arg];

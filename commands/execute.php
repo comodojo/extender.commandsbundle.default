@@ -4,7 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Console_Table;
 
 /**
- * An extender command (default bundle)
+ * Execute a Task
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>

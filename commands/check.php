@@ -3,7 +3,7 @@
 use \Comodojo\Extender\Checks;
 
 /**
- * An extender command (default bundle)
+ * Check for common configurations parameters and environment settings
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -27,6 +27,17 @@ use \Comodojo\Extender\Checks;
 
 class check extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (define what this command will do)
+     *
+     * check command will test framework installation and environment parameters
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php check
+     *
+     * @return  string
+     */
     public function execute() {
 
         $constants = Checks::constants();

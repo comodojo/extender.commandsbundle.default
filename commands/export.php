@@ -5,7 +5,7 @@ use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 
 /**
- * An extender command (default bundle)
+ * Export jobs into json file
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -29,6 +29,19 @@ use \Comodojo\Database\EnhancedDatabase;
 
 class export extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (define what this command will do)
+     *
+     * export command will dump the whole job database into provided "destination" json file
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php export /backup/jobs.json
+     *
+     * @return  string
+     * @throws  DatabaseException
+     * @throws  ShellException
+     */
     public function execute() {
 
         $destination = $this->getArgument("destination");
@@ -57,6 +70,11 @@ class export extends StandardCommand implements CommandInterface {
 
     }
 
+    /**
+     * Get whole jobs' table from scheduler database
+     *
+     * @return  array
+     */
     static private function getJobs() {
         
         try{

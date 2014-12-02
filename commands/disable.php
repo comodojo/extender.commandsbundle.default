@@ -4,7 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
 
 /**
- * An extender command (default bundle)
+ * Disable a registered job
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -28,6 +28,18 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 
 class disable extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (define what this command will do)
+     *
+     * disable command will disable job referenced from "name" argument
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php disable my_midnight_job
+     *
+     * @return  string
+     * @throws  Exception
+     */
     public function execute() {
 
         $name = $this->getArgument("name");

@@ -4,7 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
 
 /**
- * An extender command (default bundle)
+ * Add a job into scheduler database
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -28,6 +28,28 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 
 class add extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (define what this command will do)
+     *
+     * add command will put a job into scheduler database using:
+     *
+     * - arguments
+     *      * expression: the cron expression to match
+     *      * name: job name
+     *      * task: the task the job will execute
+     *      * (optional) description: job description
+     *      * (optional) parameters: a comma separated, not spaced list of 'parameter=value'
+     *
+     * - options
+     *      * enable (-e): enable job
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php add "59 23 * * *" my_midnight_job MyTask "a job that should run around midnight" test=false -e
+     *
+     * @return  string
+     * @throws  Exception
+     */
     public function execute() {
 
         $enable = $this->getOption("enable");
@@ -62,6 +84,14 @@ class add extends StandardCommand implements CommandInterface {
 
     }
 
+    /**
+     * Convert provided parameters (if any) into array
+     *
+     * @param   object  $color      ConsoleColor instance
+     * @param   string  $parameters Provided parameters
+     *
+     * @return  array
+     */
     static private function processParameters($color, $parameters) {
 
         $params = array();
@@ -75,14 +105,6 @@ class add extends StandardCommand implements CommandInterface {
                 $ps = explode("=", $parameter);
 
                 if ( sizeof($ps) == 2 ) {
-
-                    // if ( is_numeric($ps[1]) ) $value = (int)$ps[1];
-
-                    // if ( is_bool($ps[1]) ) $value = filter_var($ps[1], FILTER_VALIDATE_BOOLEAN);
-
-                    // if ( is_null($ps[1]) ) $value = null;
-
-                    //else $value = $ps[1];
 
                     $value = $ps[1];
 
