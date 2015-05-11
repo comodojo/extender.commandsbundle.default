@@ -29,7 +29,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 class del extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * del will use argument "name" to remove relative job from scheduler database
      *
@@ -38,7 +38,7 @@ class del extends StandardCommand implements CommandInterface {
      * ./econtrol.php del my_midnight_job
      *
      * @return  string
-     * @throws  Exception
+     * @throws  \Comodojo\Exception\ShellException
      */
     public function execute() {
 

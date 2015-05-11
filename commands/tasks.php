@@ -4,7 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Console_Table;
 
 /**
- * An extender command (default bundle)
+ * List registered tasks
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -28,6 +28,24 @@ use \Console_Table;
 
 class tasks extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * List registered tasks
+     *
+     * Command syntax:
+     *
+     * - Brief version
+     *
+     * ./econtrol.php tasks
+     *
+     * - Extensive version
+     *
+     * ./econtrol.php tasks -e
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $extensive = $this->getOption("extensive");

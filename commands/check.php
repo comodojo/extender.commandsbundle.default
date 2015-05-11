@@ -28,7 +28,7 @@ use \Comodojo\Extender\Checks;
 class check extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * check command will test framework installation and environment parameters
      *

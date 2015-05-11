@@ -3,7 +3,7 @@
 use \Comodojo\Exception\ShellException;
 
 /**
- * An extender command (default bundle)
+ * Pause extender using sigStop (SIGSTP)
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -29,6 +29,18 @@ class pause extends StandardCommand implements CommandInterface {
 
     static private $lockfile = "extender.pid";
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Pause extender using sigStop (SIGSTP)
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php pause
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         if ( \Comodojo\Extender\Checks::signals() === false ) throw new ShellException("This version of PHP does not support pnctl");

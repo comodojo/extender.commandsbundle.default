@@ -29,7 +29,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 class add extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * add command will put a job into scheduler database using:
      *
@@ -48,7 +48,7 @@ class add extends StandardCommand implements CommandInterface {
      * ./econtrol.php add "59 23 * * *" my_midnight_job MyTask "a job that should run around midnight" test=false -e
      *
      * @return  string
-     * @throws  Exception
+     * @throws  \Comodojo\Exception\ShellException
      */
     public function execute() {
 

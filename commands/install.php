@@ -6,7 +6,7 @@ use \Comodojo\Database\EnhancedDatabase;
 use \Comodojo\Database\QueryBuilder\Column;
 
 /**
- * An extender command (default bundle)
+ * Install the framework (post composer)
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -30,6 +30,19 @@ use \Comodojo\Database\QueryBuilder\Column;
 
 class install extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Install the framework (post composer)
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php install
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\DatabaseException
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $force = $this->getOption("force");

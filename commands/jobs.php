@@ -6,7 +6,7 @@ use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 
 /**
- * An extender command (default bundle)
+ * List jobs
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -30,6 +30,25 @@ use \Comodojo\Database\EnhancedDatabase;
 
 class jobs extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * List jobs
+     *
+     * Command syntax:
+     *
+     * - Brief version
+     *
+     * ./econtrol.php jobs
+     *
+     * - Extensive version
+     *
+     * ./econtrol.php jobs -e
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\DatabaseException
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $extensive = $this->getOption("extensive");
@@ -37,6 +56,10 @@ class jobs extends StandardCommand implements CommandInterface {
         try {
 
             $jobs = self::getJobs();
+
+        } catch (DatabaseException $de) {
+
+            throw $de;
 
         } catch (ShellException $se) {
 
@@ -71,7 +94,7 @@ class jobs extends StandardCommand implements CommandInterface {
                 ->get();
 
         }
-        catch (Exception $e) {
+        catch (DatabaseException $e) {
 
             unset($db);
 

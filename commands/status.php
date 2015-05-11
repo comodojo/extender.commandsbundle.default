@@ -4,7 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Console_Table;
 
 /**
- * An extender command (default bundle)
+ * Get status information from daemon
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -32,23 +32,39 @@ class status extends StandardCommand implements CommandInterface {
 
     static private $statusfile = "extender.status";
 
+    static private $queuefile = "extender.queue";
+
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Get status information from daemon
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php status
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
-        if ( \Comodojo\Extender\Checks::signals() === false ) throw new ShellException("This version of PHP does not support pnctl");
+        //if ( \Comodojo\Extender\Checks::signals() === false ) throw new ShellException("This version of PHP does not support pnctl");
 
         $lockfile = EXTENDER_CACHE_FOLDER.self::$lockfile;
 
         $statusfile = EXTENDER_CACHE_FOLDER.self::$statusfile;
 
+        $queuefile = EXTENDER_CACHE_FOLDER.self::$queuefile;
+
         try {
             
-            $pid = self::pushUsrEvent($lockfile);
+            //$pid = self::pushUsrEvent($lockfile);
 
-            sleep(1);
+            //sleep(1);
 
-            $status = self::readStatus($statusfile);
+            list($lock, $status, $queue) = self::readStatus( $lockfile, $statusfile, $queuefile );
 
-            $return = self::displayStatus($pid, $status, $this->color);
+            $return = self::displayStatus($lock, $status, $queue, $this->color);
 
         } catch (ShellException $se) {
             
@@ -60,31 +76,63 @@ class status extends StandardCommand implements CommandInterface {
 
     }
 
-    static private function pushUsrEvent($lockfile) {
+    // static private function pushUsrEvent($lockfile) {
     
-        $pid = @file_get_contents($lockfile);
+    //     $pid = @file_get_contents($lockfile);
 
-        if ( $pid === false ) throw new ShellException("Extender not running or not in daemon mode");
+    //     if ( $pid === false ) throw new ShellException("Extender not running or not in daemon mode");
 
-        $signal = posix_kill($pid, SIGUSR1);
+    //     $signal = posix_kill($pid, SIGUSR1);
 
-        if ( $signal === false ) throw new ShellException("Unable to send signal USR1 to extender process");
+    //     if ( $signal === false ) throw new ShellException("Unable to send signal USR1 to extender process");
 
-        return $pid;
+    //     return $pid;
 
-    }
+    // }
 
-    static private function readStatus($statusfile) {
+    static private function readStatus($lockfile, $statusfile, $queuefile) {
+
+        set_error_handler( 
+
+            function($severity, $message, $file, $line) {
+
+                throw new ShellException($message);
+
+            }
+
+        );
+
+        try {
         
-        $status = file_get_contents($statusfile);
+            $lock = file_get_contents($lockfile);
+        
+            $status = file_get_contents($statusfile);
+
+            $queue = file_get_contents($queuefile);
+
+        } catch (ShellException $se) {
+            
+            throw $se;
+
+        }
+
+        restore_error_handler();
+
+        if ( $lock === false ) throw new ShellException("Unable to read lock file");
 
         if ( $status === false ) throw new ShellException("Unable to read status file");
 
-        return unserialize($status);
+        if ( $queue === false ) throw new ShellException("Unable to read queue file");
+
+        return array(
+            $lock,
+            unserialize($status),
+            unserialize($queue)
+        );
 
     }
 
-    static private function displayStatus($pid, $status, $color) {
+    static private function displayStatus($pid, $status, $queue, $color) {
         
         $return = "\n *** Extender Status Resume *** \n";
         $return .= "  ------------------------------ \n\n";
@@ -92,6 +140,9 @@ class status extends StandardCommand implements CommandInterface {
         $return .= " - Process PID: ".$color->convert("%g".$pid."%n")."\n";
         $return .= " - Process running since: ".$color->convert("%g".date("r", (int)$status["STARTED"])."%n")."\n";
         $return .= " - Process runtime (sec): ".$color->convert("%g".(int)$status["TIME"]."%n")."\n\n";
+
+        $return .= " - Running jobs: ".$color->convert("%g".$queue["RUNNING"]."%n")."\n";
+        $return .= " - Queued jobs: ".$color->convert("%g".$queue["QUEUED"]."%n")."\n\n";
 
         $return .= " - Current Status: ". ( $status["RUNNING"] == 1 ? $color->convert("%gRUNNING%n") : $color->convert("%yPAUSED%n") )."\n";
         $return .= " - Completed jobs: ".$color->convert("%g".$status["COMPLETED"]."%n")."\n";

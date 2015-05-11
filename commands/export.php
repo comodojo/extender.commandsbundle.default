@@ -30,7 +30,7 @@ use \Comodojo\Database\EnhancedDatabase;
 class export extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * export command will dump the whole job database into provided "destination" json file
      *
@@ -39,8 +39,8 @@ class export extends StandardCommand implements CommandInterface {
      * ./econtrol.php export /backup/jobs.json
      *
      * @return  string
-     * @throws  DatabaseException
-     * @throws  ShellException
+     * @throws  \Comodojo\Exception\DatabaseException
+     * @throws  \Comodojo\Exception\ShellException
      */
     public function execute() {
 

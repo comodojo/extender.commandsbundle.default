@@ -6,7 +6,7 @@ use \Comodojo\Database\EnhancedDatabase;
 use \Comodojo\Extender\Scheduler\Scheduler;
 
 /**
- * An extender command (default bundle)
+ * Import jobs from json file
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -30,6 +30,25 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 
 class import extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Import jobs from json file
+     *
+     * Command syntax:
+     *
+     * - Import and merge
+     *
+     * ./econtrol.php import my_jobs_list.json
+     *
+     * - Import and clean
+     *
+     * ./econtrol.php import my_jobs_list.json -c
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\DatabaseException
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $source = $this->getArgument("source");

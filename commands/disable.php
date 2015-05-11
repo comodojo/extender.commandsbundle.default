@@ -29,7 +29,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 class disable extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * disable command will disable job referenced from "name" argument
      *
@@ -38,7 +38,7 @@ class disable extends StandardCommand implements CommandInterface {
      * ./econtrol.php disable my_midnight_job
      *
      * @return  string
-     * @throws  Exception
+     * @throws  \Comodojo\Exception\ShellException
      */
     public function execute() {
 

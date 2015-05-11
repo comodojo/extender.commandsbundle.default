@@ -28,6 +28,18 @@ use \Console_Table;
 
 class execute extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Execute a single task, no job required
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php execute TestTask "this=is,a=test"
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $task = $this->getArgument('task');

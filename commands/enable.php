@@ -29,7 +29,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
 class enable extends StandardCommand implements CommandInterface {
 
     /**
-     * Execute statement (define what this command will do)
+     * Execute statement (what this command will do)
      *
      * enable command will activate job referenced from "name" argument
      *
@@ -38,7 +38,7 @@ class enable extends StandardCommand implements CommandInterface {
      * ./econtrol.php enable my_midnight_job
      *
      * @return  string
-     * @throws  Exception
+     * @throws  \Comodojo\Exception\ShellException
      */
     public function execute() {
 

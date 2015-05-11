@@ -6,7 +6,7 @@ use \Comodojo\Database\EnhancedDatabase;
 use \Console_Table;
 
 /**
- * An extender command (default bundle)
+ * Show worklog's detail
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -30,6 +30,18 @@ use \Console_Table;
 
 class worklog extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Show worklog's detail
+     *
+     * Command syntax:
+     *
+     * ./econtrol.php worklog 42
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $wkid = $this->getArgument("id");

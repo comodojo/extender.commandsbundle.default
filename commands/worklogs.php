@@ -6,7 +6,7 @@ use \Comodojo\Database\EnhancedDatabase;
 use \Console_Table;
 
 /**
- * An extender command (default bundle)
+ * Show worklogs
  *
  * @package     Comodojo extender
  * @author      Marco Giovinazzi <info@comodojo.org>
@@ -30,6 +30,32 @@ use \Console_Table;
 
 class worklogs extends StandardCommand implements CommandInterface {
 
+    /**
+     * Execute statement (what this command will do)
+     *
+     * Show worklogs
+     *
+     * Command syntax:
+     *
+     * - Show last 10 worklogs
+     *
+     * ./econtrol.php worklogs
+     *
+     * - Show last 100 worklogs
+     *
+     * ./econtrol.php worklogs 100
+     *
+     * - Show last 10 worklogs starting from 10
+     *
+     * ./econtrol.php worklogs 10 10
+     *
+     * - Show last 10 worklogs, extensive version
+     *
+     * ./econtrol.php worklogs -e
+     *
+     * @return  string
+     * @throws  \Comodojo\Exception\ShellException
+     */
     public function execute() {
 
         $howmany = $this->getArgument("howmany");
