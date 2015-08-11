@@ -6,7 +6,7 @@ use \Comodojo\Exception\ShellException;
  * Pause extender using sigStop (SIGSTP)
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -25,7 +25,7 @@ use \Comodojo\Exception\ShellException;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class pause extends StandardCommand implements CommandInterface {
+class pause extends AbstractCommand {
 
     static private $lockfile = "extender.pid";
 

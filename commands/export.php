@@ -8,7 +8,7 @@ use \Comodojo\Database\EnhancedDatabase;
  * Export jobs into json file
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -27,7 +27,7 @@ use \Comodojo\Database\EnhancedDatabase;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class export extends StandardCommand implements CommandInterface {
+class export extends AbstractCommand {
 
     /**
      * Execute statement (what this command will do)

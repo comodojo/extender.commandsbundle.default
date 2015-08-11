@@ -9,7 +9,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
  * Import jobs from json file
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -28,7 +28,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class import extends StandardCommand implements CommandInterface {
+class import extends AbstractCommand {
 
     /**
      * Execute statement (what this command will do)

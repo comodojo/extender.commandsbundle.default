@@ -7,7 +7,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
  * Delete job from scheduler database
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -26,7 +26,7 @@ use \Comodojo\Extender\Scheduler\Scheduler;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class del extends StandardCommand implements CommandInterface {
+class del extends AbstractCommand {
 
     /**
      * Execute statement (what this command will do)

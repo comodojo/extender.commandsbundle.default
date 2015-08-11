@@ -9,14 +9,15 @@
         "commands",
         "bundle"
     ],
-    "homepage": "http://extender.comodojo.org",
+    "homepage": "https://extender.comodojo.org",
      "support": {
         "issues": "https://github.com/comodojo/extender.servicebundle.default/issues"
     },
     "authors": [
         {
             "name": "Marco Giovinazzi",
-            "email": "info@comodojo.org"
+            "email": "marco.giovinazzi@comodojo.org",
+            "homepage": "http://jme.altervista.org"
         }
     ],
     "extra": {

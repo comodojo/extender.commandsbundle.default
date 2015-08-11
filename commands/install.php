@@ -9,7 +9,7 @@ use \Comodojo\Database\QueryBuilder\Column;
  * Install the framework (post composer)
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -28,7 +28,7 @@ use \Comodojo\Database\QueryBuilder\Column;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class install extends StandardCommand implements CommandInterface {
+class install extends AbstractCommand {
 
     /**
      * Execute statement (what this command will do)

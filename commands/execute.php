@@ -7,7 +7,7 @@ use \Console_Table;
  * Execute a Task
  *
  * @package     Comodojo extender
- * @author      Marco Giovinazzi <info@comodojo.org>
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
  * @license     GPL-3.0+
  *
  * LICENSE:
@@ -26,7 +26,7 @@ use \Console_Table;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class execute extends StandardCommand implements CommandInterface {
+class execute extends AbstractCommand {
 
     /**
      * Execute statement (what this command will do)
@@ -48,17 +48,13 @@ class execute extends StandardCommand implements CommandInterface {
 
         if ( $this->tasks->isTaskRegistered($task) == false ) throw new ShellException("Task is not registered");
 
-        $task_target = $this->tasks->getTarget($task);
+        $class = $this->tasks->getClass($task);
 
-        if ( is_null($task_target) ) throw new ShellException("Task target not available");
-
-        if ( file_exists($task_target) === false ) throw new ShellException("Task file does not exists");
-
-        if ( (include($task_target)) === false ) throw new ShellException("Task file cannot be included");
+        if ( class_exists($class) === false ) throw new ShellException("Task cannot be loaded");
 
         print "\nExecuting task ".$task."...\n"; 
 
-        $run_result = $this->runTask($task, $parameters);
+        $run_result = $this->runTask($task, $class, $parameters);
 
         $pid = $run_result[0];
 
@@ -90,7 +86,7 @@ class execute extends StandardCommand implements CommandInterface {
 
     }
 
-    private function runTask($task, $parameters) {
+    private function runTask($task, $class, $parameters) {
 
         $start_timestamp = microtime(true);
 
@@ -98,15 +94,11 @@ class execute extends StandardCommand implements CommandInterface {
 
         $id = 0;
 
-        $class = $this->tasks->getClass($task);
-
-        $task_class = "\\Comodojo\\Extender\\Task\\".$class;
-
         try {
 
             // create a task instance
 
-            $thetask = new $task_class($parameters, null, $name, $start_timestamp, false);
+            $thetask = new $class($parameters, null, $name, $start_timestamp, false);
 
             // get the task pid (we are in singlethread mode)
 
