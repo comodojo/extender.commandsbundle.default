@@ -63,7 +63,7 @@ class pause extends AbstractCommand {
 
     static private function pushStopEvent($lockfile) {
     
-        $pid = file_get_contents($lockfile);
+        $pid = @file_get_contents($lockfile);
 
         if ( $pid === false ) throw new ShellException("Extender not running or not in daemon mode");
 

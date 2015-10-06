@@ -103,60 +103,35 @@ class install extends AbstractCommand {
 
             $db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_WORKLOGS)->drop(true);
 
-            $jobs_column_id          = new Column('id','INTEGER');
-            $jobs_column_name        = new Column('name','STRING');
-            $jobs_column_task        = new Column('task','STRING');
-            $jobs_column_description = new Column('description','TEXT');
-            $jobs_column_enabled     = new Column('enabled','BOOL');
-            $jobs_column_min         = new Column('min','STRING');
-            $jobs_column_hour        = new Column('hour','STRING');
-            $jobs_column_dayofmonth  = new Column('dayofmonth','STRING');
-            $jobs_column_month       = new Column('month','STRING');
-            $jobs_column_dayofweek   = new Column('dayofweek','STRING');
-            $jobs_column_year        = new Column('year','STRING');
-            $jobs_column_params      = new Column('params','TEXT');
-            $jobs_column_lastrun     = new Column('lastrun','INTEGER');
-            $jobs_column_firstrun    = new Column('firstrun','INTEGER');
-
-            $jobs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
-               ->column($jobs_column_id->unsigned()->autoIncrement()->primaryKey())
-               ->column($jobs_column_name->length(64)->notNull()->unique())
-               ->column($jobs_column_task->length(64)->notNull())
-               ->column($jobs_column_description->defaultValue(null))
-               ->column($jobs_column_enabled->defaultValue(0))
-               ->column($jobs_column_min->length(16)->defaultValue(null))
-               ->column($jobs_column_hour->length(16)->defaultValue(null))
-               ->column($jobs_column_dayofmonth->length(16)->defaultValue(null))
-               ->column($jobs_column_month->length(16)->defaultValue(null))
-               ->column($jobs_column_dayofweek->length(16)->defaultValue(null))
-               ->column($jobs_column_year->length(16)->defaultValue(null))
-               ->column($jobs_column_params->defaultValue(null))
-               ->column($jobs_column_lastrun->length(64)->defaultValue(null))
-               ->column($jobs_column_firstrun->length(64)->notNull())
+            $jobs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_JOBS)
+               ->column(Column::create('id','INTEGER')->unsigned()->autoIncrement()->primaryKey())
+               ->column(Column::create('name','STRING')->length(64)->notNull()->unique())
+               ->column(Column::create('task','STRING')->length(64)->notNull())
+               ->column(Column::create('description','TEXT')->defaultValue(null))
+               ->column(Column::create('enabled','BOOL')->defaultValue(0))
+               ->column(Column::create('min','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('hour','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('dayofmonth','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('month','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('dayofweek','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('year','STRING')->length(16)->defaultValue(null))
+               ->column(Column::create('params','TEXT')->defaultValue(null))
+               ->column(Column::create('lastrun','INTEGER')->length(64)->defaultValue(null))
+               ->column(Column::create('firstrun','INTEGER')->length(64)->notNull())
                ->create(EXTENDER_DATABASE_TABLE_JOBS, true);
 
             // $db->clean();
 
-            $worklogs_column_id          = new Column('id','INTEGER');
-            $worklogs_column_pid         = new Column('pid','INTEGER');
-            $worklogs_column_name        = new Column('name','STRING');
-            $worklogs_column_task        = new Column('task','STRING');
-            $worklogs_column_status      = new Column('status','STRING');
-            $worklogs_column_success     = new Column('success','BOOL');
-            $worklogs_column_result      = new Column('result','TEXT');
-            $worklogs_column_start       = new Column('start','STRING');
-            $worklogs_column_end         = new Column('end','STRING');
-
-            $worklogs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)
-               ->column($worklogs_column_id->unsigned()->autoIncrement()->primaryKey())
-               ->column($worklogs_column_pid->unsigned()->defaultValue(null))
-               ->column($worklogs_column_name->length(64)->notNull())
-               ->column($worklogs_column_task->length(64)->notNull())
-               ->column($worklogs_column_status->length(12)->notNull())
-               ->column($worklogs_column_success->defaultValue(0))
-               ->column($worklogs_column_result->defaultValue(null))
-               ->column($worklogs_column_start->length(64)->notNull())
-               ->column($worklogs_column_end->length(64)->defaultValue(null))
+            $worklogs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_WORKLOGS)
+               ->column(Column::create('id','INTEGER')->unsigned()->autoIncrement()->primaryKey())
+               ->column(Column::create('pid','INTEGER')->unsigned()->defaultValue(null))
+               ->column(Column::create('name','STRING')->length(64)->notNull())
+               ->column(Column::create('task','STRING')->length(64)->notNull())
+               ->column(Column::create('status','STRING')->length(12)->notNull())
+               ->column(Column::create('success','BOOL')->defaultValue(0))
+               ->column(Column::create('result','TEXT')->defaultValue(null))
+               ->column(Column::create('start','STRING')->length(64)->notNull())
+               ->column(Column::create('end','STRING')->length(64)->defaultValue(null))
                ->create(EXTENDER_DATABASE_TABLE_WORKLOGS, true);
 
         } catch (DatabaseException $de) {
