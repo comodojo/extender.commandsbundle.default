@@ -4,6 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 use \Comodojo\Database\QueryBuilder\Column;
+use \Exception;
 
 /**
  * Install the framework (post composer)

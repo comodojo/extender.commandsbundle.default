@@ -59,10 +59,11 @@ class worklog extends AbstractCommand {
 
         }
 
-        if ( $worklog["length"] == 0 ) throw new ShellException("Cannot find worklog (wrong id?)");
+        if ( $worklog->getLength() == 0 ) throw new ShellException("Cannot find worklog (wrong id?)");
 
-        $wklg = $worklog["data"][0];
+        $wklg = $worklog->getData();
 
+        $wklg = $wklg[0];
         
         $tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
 

@@ -2,6 +2,7 @@
 
 use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
+use \Exception;
 
 /**
  * Enable a registered job

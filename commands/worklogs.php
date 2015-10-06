@@ -108,7 +108,7 @@ class worklogs extends AbstractCommand {
 
         }
 
-        foreach ($worklogs["data"] as $worklog) {
+        foreach ($worklogs->getData() as $worklog) {
 
             $result = strlen($worklog["result"]) >= 60 ? substr($worklog["result"],0,60)."..." : $worklog["result"];
 

@@ -2,6 +2,7 @@
 
 use \Comodojo\Exception\ShellException;
 use \Comodojo\Extender\Scheduler\Scheduler;
+use \Exception;
 
 /**
  * Add a job into scheduler database

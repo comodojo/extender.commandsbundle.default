@@ -4,6 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Console_Table;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
+use \Exception;
 
 /**
  * List jobs
@@ -104,7 +105,7 @@ class jobs extends AbstractCommand {
         
         unset($db);
 
-        return $result['data'];
+        return $result->getData();
         
     }
 

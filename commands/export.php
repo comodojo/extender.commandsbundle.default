@@ -106,7 +106,7 @@ class export extends AbstractCommand {
         
         unset($db);
 
-        return $result['data'];
+        return $result->getData();
         
     }
 

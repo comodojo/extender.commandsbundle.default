@@ -2,6 +2,7 @@
 
 use \Comodojo\Exception\ShellException;
 use \Console_Table;
+use \Exception;
 
 /**
  * Execute a Task

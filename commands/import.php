@@ -4,6 +4,7 @@ use \Comodojo\Exception\ShellException;
 use \Comodojo\Exception\DatabaseException;
 use \Comodojo\Database\EnhancedDatabase;
 use \Comodojo\Extender\Scheduler\Scheduler;
+use \Exception;
 
 /**
  * Import jobs from json file
