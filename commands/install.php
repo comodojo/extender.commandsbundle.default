@@ -118,7 +118,7 @@ class install extends AbstractCommand {
                ->column(Column::create('params','TEXT')->defaultValue(null))
                ->column(Column::create('lastrun','INTEGER')->length(64)->defaultValue(null))
                ->column(Column::create('firstrun','INTEGER')->length(64)->notNull())
-               ->create(EXTENDER_DATABASE_TABLE_JOBS, true);
+               ->create(EXTENDER_DATABASE_TABLE_JOBS);
 
             // $db->clean();
 
@@ -132,7 +132,7 @@ class install extends AbstractCommand {
                ->column(Column::create('result','TEXT')->defaultValue(null))
                ->column(Column::create('start','STRING')->length(64)->notNull())
                ->column(Column::create('end','STRING')->length(64)->defaultValue(null))
-               ->create(EXTENDER_DATABASE_TABLE_WORKLOGS, true);
+               ->create(EXTENDER_DATABASE_TABLE_WORKLOGS);
 
         } catch (DatabaseException $de) {
 
