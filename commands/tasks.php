@@ -67,7 +67,7 @@ class tasks extends AbstractCommand {
             'Description'
         ));
 
-        foreach ($tasks->getTasks() as $task => $parameters) {
+        foreach ($tasks->getTasks(true) as $task => $parameters) {
 
             if ( empty($parameters["description"]) ) $description = "No description available";
 

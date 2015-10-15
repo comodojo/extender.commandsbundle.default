@@ -92,6 +92,7 @@ class jobs extends AbstractCommand {
                 ->keys(array("id","name","task","description",
                     "min","hour","dayofmonth","month","dayofweek","year",
                     "params","lastrun","firstrun","enabled"))
+                ->orderBy("name")
                 ->get();
 
         }
