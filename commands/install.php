@@ -125,6 +125,7 @@ class install extends AbstractCommand {
             $worklogs = $db->tablePrefix(EXTENDER_DATABASE_PREFIX)->table(EXTENDER_DATABASE_TABLE_WORKLOGS)
                ->column(Column::create('id','INTEGER')->unsigned()->autoIncrement()->primaryKey())
                ->column(Column::create('pid','INTEGER')->unsigned()->defaultValue(null))
+               ->column(Column::create('jobid','INTEGER')->unsigned()->defaultValue(null))
                ->column(Column::create('name','STRING')->length(64)->notNull())
                ->column(Column::create('task','STRING')->length(64)->notNull())
                ->column(Column::create('status','STRING')->length(12)->notNull())
