@@ -87,9 +87,9 @@ class worklog extends AbstractCommand {
 
         $tbl->addSeparator();
 
-        $tbl->addRow(array("Success",$this->color->convert( $wklg["success"] == true ? "%gV%n" : "%rX%n" )));
+        $tbl->addRow(array("Success", $this->color->convert( $wklg["success"] == true ? "%gV%n" : "%rX%n" )));
 
-        $tbl->addRow(array("Result",$wklg["result"]));
+        $tbl->addRow(array("Result", chunk_split($wklg["result"], 80)));
 
 
         return "Requested worklog:\n------------------\n\n".$tbl->getTable();

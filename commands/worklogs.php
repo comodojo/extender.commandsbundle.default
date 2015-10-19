@@ -78,78 +78,10 @@ class worklogs extends AbstractCommand {
             throw new ShellException($e->getMessage());
 
         }
+        
+        if ( $extensive ) return self::extensive($this->color, $worklogs);
 
-        $tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
-
-        if ( is_null($extensive) ) {
-
-            $tbl->setHeaders(array(
-                "ID",
-                "Status",
-                "Name",
-                "Start",
-                "End",
-                "S"
-            ));
-
-        } else {
-
-            $tbl->setHeaders(array(
-                "ID",
-                "Status",
-                "PID",
-                "Name",
-                "Task",
-                "Start",
-                "End",
-                "S",
-                "Result"
-            ));
-
-        }
-
-        foreach ($worklogs->getData() as $worklog) {
-
-            $result = strlen($worklog["result"]) >= 60 ? substr($worklog["result"],0,60)."..." : $worklog["result"];
-
-            $start = date("r", (int)$worklog["start"]);
-
-            $end = empty($worklog["end"]) ? "-" : date("r", (int)$worklog["end"]);
-
-            $status = $this->color->convert("%y".$worklog["status"]."%n");
-
-            $success = $this->color->convert( $worklog["success"] == true ? "%gV%n" : "%rX%n" );
-
-            if ( is_null($extensive) ) {
-
-                $tbl->addRow(array(
-                    $worklog["id"],
-                    $status,
-                    $worklog["name"],
-                    $start,
-                    $end,
-                    $success
-                ));
-
-            } else {
-
-                $tbl->addRow(array(
-                    $worklog["id"],
-                    $status,
-                    $worklog["pid"],
-                    $worklog["name"],
-                    $worklog["task"],
-                    $start,
-                    $end,
-                    $success,
-                    $result
-                ));
-
-            }
-
-        }
-
-        return "Found ".$worklogs['length']." worklog(s):\n--------------------\n\n".$tbl->getTable();
+        else return self::brief($this->color, $worklogs);
 
     }
 
@@ -189,6 +121,96 @@ class worklogs extends AbstractCommand {
         
         return $result;
         
+    }
+
+    static private function brief($color, $worklogs) {
+
+        $tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
+
+        $tbl->setHeaders(array(
+            "ID",
+            "Status",
+            "Name",
+            "Start",
+            "End",
+            "S"
+        ));
+
+        foreach ($worklogs->getData() as $worklog) {
+
+            $result = strlen($worklog["result"]) >= 60 ? substr($worklog["result"],0,60)."..." : $worklog["result"];
+
+            $start = date("r", (int)$worklog["start"]);
+
+            $end = empty($worklog["end"]) ? "-" : date("r", (int)$worklog["end"]);
+
+            $status = $color->convert("%y".$worklog["status"]."%n");
+
+            $success = $color->convert( $worklog["success"] == true ? "%gV%n" : "%rX%n" );
+
+            $tbl->addRow(array(
+                $worklog["id"],
+                $status,
+                $worklog["name"],
+                $start,
+                $end,
+                $success
+            ));
+
+        }
+
+        return "Found ".$worklogs->getLength()." worklog(s):\n--------------------\n\n".$tbl->getTable();
+
+    }
+
+    static private function extensive($color, $worklogs) {
+
+        $return = "\nFound ".$worklogs->getLength()." worklog(s):\n--------------------\n\n";
+
+        foreach ($worklogs->getData() as $worklog) {
+            
+            $result = strlen($worklog["result"]) >= 60 ? substr($worklog["result"],0,60)."..." : $worklog["result"];
+
+            $start = date("r", (int)$worklog["start"]);
+
+            $end = empty($worklog["end"]) ? "-" : date("r", (int)$worklog["end"]);
+
+            $status = $color->convert("%y".$worklog["status"]."%n");
+
+            $success = $color->convert( $worklog["success"] == true ? "%gV%n" : "%rX%n" );
+
+            $tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
+
+            $tbl->addRow(array("ID", $worklog["id"]));
+            
+            $tbl->addRow(array("Status", $status));
+            
+            $tbl->addRow(array("PID", $worklog["pid"]));
+            
+            $tbl->addSeparator();
+            
+            $tbl->addRow(array("Name", $worklog["name"]));
+            
+            $tbl->addRow(array("Task", $worklog["task"]));
+            
+            $tbl->addSeparator();
+            
+            $tbl->addRow(array("Start", $start));
+            
+            $tbl->addRow(array("End", $end));
+            
+            $tbl->addSeparator();
+            
+            $tbl->addRow(array("Success", $success));
+            
+            $tbl->addRow(array("Result", $result));
+
+            $return .= $tbl->getTable()."\n\n";
+
+        }
+        
+        return $return;
+
     }
 
 }
