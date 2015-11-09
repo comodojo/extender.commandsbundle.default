@@ -22,46 +22,37 @@
     ],
     "extra": {
         "comodojo-commands-register": {
-            "check": {
-                "description": "Perform multiple checks on system configuration",
-                "aliases": [],
-                "options": {},
-                "arguments": {}
-            },
-            "install": {
-                "description": "Perform first installation task",
-                "aliases": ["inst","in"],
+            "configuration": {
+                "class": "Comodojo\\Extender\\Command\\Configuration",
+                "description": "Backup and restore configuration",
+                "aliases": ["conf","config"],
                 "options": {
-                    "force": {
-                        "short_name": "-f",
-                        "long_name": "--force",
-                        "action": "StoreTrue",
-                        "description": "Force installation re-creating database"
-                    },
                     "clean": {
                         "short_name": "-c",
                         "long_name": "--clean",
                         "action": "StoreTrue",
-                        "description": "Drain database tables only"
+                        "description": "Clean database first (restore only)"
                     }
                 },
-                "arguments": {}
-            },
-            "tasks": {
-                "description": "List available tasks",
-                "aliases": ["task","tk"],
-                "options": {
-                    "extensive": {
-                        "short_name": "-e",
-                        "long_name": "--extensive",
-                        "action": "StoreTrue",
-                        "description": "Show task target (full path)"
+                "arguments": {
+                    "action": {
+                        "choices": [],
+                        "multiple": false,
+                        "optional": false,
+                        "description": "Action to perform",
+                        "help_name": "backup, restore"
+                    },
+                    "file": {
+                        "choices": [],
+                        "multiple": false,
+                        "optional": false,
+                        "description": "Configuration file"
                     }
-                },
-                "arguments": {}
+                }
             },
             "execute": {
-                "description": "Execute a tasks without invoking extender",
+                "class": "Comodojo\\Extender\\Command\\Execute",
+                "description": "Execute a tasks",
                 "aliases": ["exe","exec"],
                 "options": {},
                 "arguments": {
@@ -80,196 +71,145 @@
                 }
             },
             "jobs": {
-                "description": "List scheduled jobs",
+                "class": "Comodojo\\Extender\\Command\\Jobs",
+                "description": "Manage jobs",
                 "aliases": ["job"],
                 "options": {
                     "extensive": {
-                        "short_name": "-e",
+                        "short_name": "-x",
                         "long_name": "--extensive",
                         "action": "StoreTrue",
-                        "description": "Show extensive informations"
-                    }
-                },
-                "arguments": {}
-            },
-            "add": {
-                "description": "Add a job to scheduler",
-                "aliases": [],
-                "options": {
+                        "description": "Show detailed informations"
+                    },
                     "enable": {
                         "short_name": "-e",
                         "long_name": "--enable",
                         "action": "StoreTrue",
-                        "description": "Enable job too"
+                        "description": "Enable a new job"
                     }
                 },
                 "arguments": {
-                    "expression": {
-                        "choices": {},
+                    "action": {
+                        "choices": [],
                         "multiple": false,
-                        "optional": false,
-                        "description": "Cron expression"
+                        "optional": true,
+                        "description": "Action to perform",
+                        "help_name": "enable, disable, add, remove, show*"
                     },
                     "name": {
-                        "choices": {},
+                        "choices": [],
                         "multiple": false,
-                        "optional": false,
-                        "description": "Job name"
+                        "optional": true,
+                        "description": "The job name"
+                    },
+                    "expression": {
+                        "choices": [],
+                        "multiple": false,
+                        "optional": true,
+                        "description": "CRON expression"
                     },
                     "task": {
-                        "choices": {},
+                        "choices": [],
                         "multiple": false,
-                        "optional": false,
-                        "description": "Task to execute"
+                        "optional": true,
+                        "description": "The task to be executed"
                     },
                     "description": {
-                        "choices": {},
+                        "choices": [],
                         "multiple": false,
-                        "optional": false,
-                        "description": "A brief job's description"
+                        "optional": true,
+                        "description": "A brief description of job"
                     },
                     "parameters": {
-                        "choices": {},
+                        "choices": [],
                         "multiple": false,
                         "optional": true,
                         "description": "A comma separated, not spaced, [option]=[value] parameters' list"
                     }
                 }
             },
-            "del": {
-                "description": "Delete a job",
-                "aliases": [],
-                "options": {},
-                "arguments": {
-                    "name": {
-                        "choices": {},
-                        "multiple": false,
-                        "optional": false,
-                        "description": "Job name"
-                    }
-                }
-            },
-            "enable": {
-                "description": "Enable a job",
-                "aliases": ["ena"],
-                "options": {},
-                "arguments": {
-                    "name": {
-                        "choices": {},
-                        "multiple": false,
-                        "optional": false,
-                        "description": "Job name"
-                    }
-                }
-            },
-            "disable": {
-                "description": "Disable a job",
-                "aliases": ["dis"],
-                "options": {},
-                "arguments": {
-                    "name": {
-                        "choices": {},
-                        "multiple": false,
-                        "optional": false,
-                        "description": "Job name"
-                    }
-                }
-            },
-            "worklogs": {
-                "description": "Display worklogs table",
-                "aliases": ["wrks","wkls"],
+            "logs": {
+                "class": "Comodojo\\Extender\\Command\\Logs",
+                "description": "Show logs",
+                "aliases": ["log"],
                 "options": {
                     "extensive": {
-                        "short_name": "-e",
+                        "short_name": "-x",
                         "long_name": "--extensive",
                         "action": "StoreTrue",
-                        "description": "Show extensive informations"
+                        "description": "Show detailed informations"
                     }
                 },
                 "arguments": {
-                    "howmany": {
-                        "choices": {},
+                    "action": {
+                        "choices": [],
                         "multiple": false,
                         "optional": true,
-                        "description": "Number of worklogs to fetch"
+                        "description": "Action to perform",
+                        "help_name": "wid, jid, time, limit, show*"
                     },
-                    "from": {
-                        "choices": {},
+                    "filter": {
+                        "choices": [],
                         "multiple": false,
                         "optional": true,
-                        "description": "Worklog (num) to start from"
-                    }
-                }
-            },
-            "worklog": {
-                "description": "Display detailed information about a worklog",
-                "aliases": ["wrk","wkl"],
-                "options": {},
-                "arguments": {
-                    "id": {
-                        "choices": {},
+                        "description": "Filter parameter"
+                    },
+                    "extra": {
+                        "choices": [],
                         "multiple": false,
-                        "optional": false,
-                        "description": "ID of worklog to retrieve"
+                        "optional": true,
+                        "description": "Extra parameter"
                     }
                 }
             },
-            "status": {
-                "description": "Get extender status (if in daemon mode)",
-                "aliases": ["st"],
-                "options": {},
-                "arguments": {}
-            },
-            "pause": {
-                "description": "Pause extender (if running and in daemon mode)",
-                "aliases": ["pau"],
-                "options": {},
-                "arguments": {}
-            },
-            "resume": {
-                "description": "Resume extender (if paused and in daemon mode)",
-                "aliases": ["st"],
-                "options": {},
-                "arguments": {}
-            },
-            "export": {
-                "description": "Export whole job list to file",
-                "aliases": ["exp"],
-                "options": {},
-                "arguments": {
-                    "destination": {
-                        "choices": {},
-                        "multiple": false,
-                        "optional": false,
-                        "description": "Destination file"
-                    }
-                }
-            },
-            "import": {
-                "description": "Import job list from file",
-                "aliases": ["imp"],
+            "system": {
+                "class": "Comodojo\\Extender\\Command\\System",
+                "description": "System actions",
+                "aliases": ["sys"],
                 "options": {
+                    "force": {
+                        "short_name": "-f",
+                        "long_name": "--force",
+                        "action": "StoreTrue",
+                        "description": "Force installation re-creating database"
+                    },
                     "clean": {
                         "short_name": "-c",
                         "long_name": "--clean",
                         "action": "StoreTrue",
-                        "description": "Delete existent jobs first"
+                        "description": "Drain database tables only"
                     }
                 },
                 "arguments": {
-                    "source": {
-                        "choices": {},
+                    "action": {
+                        "choices": [],
                         "multiple": false,
                         "optional": false,
-                        "description": "Source file"
+                        "description": "Action to perform",
+                        "help_name": "status, check, install, pause, resume"
                     }
                 }
+            },
+            "tasks": {
+                "class": "Comodojo\\Extender\\Command\\Tasks",
+                "description": "Show tasks",
+                "aliases": ["task"],
+                "options": {
+                    "extensive": {
+                        "short_name": "-x",
+                        "long_name": "--extensive",
+                        "action": "StoreTrue",
+                        "description": "Show detailed informations"
+                    }
+                },
+                "arguments": {}
             }
         }
     },
     "autoload": {
         "psr-4": {
-             "Comodojo\\Extender\\Command\\": "commands"
+             "Comodojo\\Extender\\Command\\": "commands",
+             "Comodojo\\Extender\\CommandSource\\": "src"
          }
     }
 }

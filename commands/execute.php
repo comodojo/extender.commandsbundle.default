@@ -1,61 +1,29 @@
 <?php namespace Comodojo\Extender\Command;
 
-use \Comodojo\Exception\ShellException;
+use \Comodojo\Extender\CommandSource\Execute as SourceExecute;
 use \Console_Table;
+use \Comodojo\Exception\ShellException;
 use \Exception;
 
-/**
- * Execute a Task
- *
- * @package     Comodojo extender
- * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
- * @license     GPL-3.0+
- *
- * LICENSE:
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+class Execute extends AbstractCommand {
 
-class execute extends AbstractCommand {
-
-    /**
-     * Execute statement (what this command will do)
-     *
-     * Execute a single task, no job required
-     *
-     * Command syntax:
-     *
-     * ./econtrol.php execute TestTask "this=is,a=test"
-     *
-     * @return  string
-     * @throws  \Comodojo\Exception\ShellException
-     */
     public function execute() {
 
         $task = $this->getArgument('task');
 
         $parameters = self::processParameters($this->getArgument('parameters'));
 
-        if ( $this->tasks->isTaskRegistered($task) == false ) throw new ShellException("Task is not registered");
+        print "\nExecuting task ".$task."...\n";
 
-        $class = $this->tasks->getClass($task);
+        try {
 
-        if ( class_exists($class) === false ) throw new ShellException("Task cannot be loaded");
+            $run_result = SourceExecute::runTask($task, $parameters);
+            
+        } catch (Exception $e) {
+            
+            throw $e;
 
-        print "\nExecuting task ".$task."...\n"; 
-
-        $run_result = $this->runTask($task, $class, $parameters);
+        }
 
         $pid = $run_result[0];
 
@@ -67,10 +35,13 @@ class execute extends AbstractCommand {
 
         $result = strlen($run_result[5]) >= 80 ? substr($run_result[5],0,80)."..." : $run_result[5];
 
+        $wid = $run_result[7];
+
         $tbl = new Console_Table(CONSOLE_TABLE_ALIGN_LEFT, CONSOLE_TABLE_BORDER_ASCII, 1, null, true);
 
         $tbl->setHeaders(array(
             'Pid',
+            'Wid',
             'Success',
             'Result (truncated)',
             'Time elapsed'
@@ -78,6 +49,7 @@ class execute extends AbstractCommand {
 
         $tbl->addRow(array(
             $pid,
+            $wid,
             $this->color->convert($success ? "%gYES%n" : "%rNO%n"),
             $this->color->convert($success ? "%g".$result."%n" : "%r".$result."%n"),
             $success ? ($end_timestamp-$start_timestamp) : "--"
@@ -87,40 +59,7 @@ class execute extends AbstractCommand {
 
     }
 
-    private function runTask($task, $class, $parameters) {
-
-        $start_timestamp = microtime(true);
-
-        $name = 'ECONTROL';
-
-        $id = 0;
-
-        try {
-
-            // create a task instance
-
-            $thetask = new $class($parameters, null, $name, $start_timestamp, false);
-
-            // get the task pid (we are in singlethread mode)
-
-            $pid = $thetask->getPid();
-
-            // run task
-
-            $result = $thetask->start();
-        
-        }
-        catch (Exception $e) {
-        
-            return array($pid, $name, false, $start_timestamp, null, $e->getMessage(), $id);
-        
-        }
-
-        return array($pid, $name, $result["success"], $start_timestamp, $result["timestamp"], $result["result"], $id);
-
-    }
-
-    static private function processParameters($parameters) {
+    private static function processParameters($parameters) {
 
         if ( is_null($parameters) ) return array();
 
