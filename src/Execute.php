@@ -1,6 +1,7 @@
 <?php namespace Comodojo\Extender\CommandSource;
 
 use \Comodojo\Extender\TasksTable;
+use \Comodojo\Extender\Log\EcontrolLogger;
 use \Exception;
 
 class Execute {
@@ -47,9 +48,7 @@ class Execute {
 
     private static function getTasks() {
 
-        $extender = TasksTable::load();
-
-        return $extender;
+        return TasksTable::load(EcontrolLogger::create(false));
 
     }
 
