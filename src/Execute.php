@@ -6,11 +6,15 @@ use \Exception;
 
 class Execute {
 
-    public static function runTask($task, $parameters) {
+    public static function runTask($task, $parameters, $logger) {
 
         $tasks = self::getTasks();
 
-        if ( $tasks->isTaskRegistered($task) == false ) throw new Exception("Task is not registered");
+        $logger->debug("Checking if task is registered");
+
+        if ( $tasks->isRegistered($task) == false ) throw new Exception("Task is not registered");
+
+        $logger->debug("Checking if class is loadable");
 
         $class = $tasks->getClass($task);
 
@@ -26,13 +30,19 @@ class Execute {
 
             // create a task instance
 
-            $thetask = new $class($parameters, null, $name, $start_timestamp, false);
+            $logger->info("Creating the task");
+
+            $thetask = new $class($parameters, $logger, null, $name, $start_timestamp, false);
 
             // get the task pid (we are in singlethread mode)
 
             $pid = $thetask->getPid();
 
+            $logger->info("Task's PID: ".$pid);
+
             // run task
+
+            $logger->info("Running the task");
 
             $result = $thetask->start();
         

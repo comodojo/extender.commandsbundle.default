@@ -193,11 +193,15 @@ class System extends AbstractCommand {
 
     private function install($force, $clean) {
 
+        $this->logger->debug("Checking database status");
+
         $installed = SourceSystem::checkInstalled();
 
         if ( $installed AND $clean ) {
 
             try {
+
+                $this->logger->info("Truncating database");
                 
                 SourceSystem::emptyDatabase();
 
@@ -214,6 +218,8 @@ class System extends AbstractCommand {
         if ( $installed AND is_null($force) ) return $this->color->convert("\n%yExtender already installed, use --force to reinstall.%n\n");
 
         try {
+
+            $this->logger->info("Installing database");
 
             SourceSystem::installDatabase();
 

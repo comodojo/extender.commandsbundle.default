@@ -17,7 +17,7 @@ class Execute extends AbstractCommand {
 
         try {
 
-            $run_result = SourceExecute::runTask($task, $parameters);
+            $run_result = SourceExecute::runTask($task, $parameters, $this->logger);
             
         } catch (Exception $e) {
             
