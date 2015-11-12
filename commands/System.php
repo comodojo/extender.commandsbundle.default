@@ -171,7 +171,7 @@ class System extends AbstractCommand {
 
         }
 
-        return $color->convert("%yExtender paused (pid ".$pid.")%n")."\n";
+        return $this->color->convert("%yExtender paused (pid ".$pid.")%n")."\n";
 
     }
 
@@ -187,7 +187,7 @@ class System extends AbstractCommand {
 
         }
 
-        return $color->convert("%yExtender resumed (pid ".$pid.")%n")."\n";
+        return $this->color->convert("%gExtender resumed (pid ".$pid.")%n")."\n";
 
     }
 

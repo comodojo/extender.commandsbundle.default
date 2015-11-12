@@ -28,51 +28,70 @@ class Jobs extends AbstractCommand {
         $enable = $this->getOption("enable");
 
         try {
-            
-            switch ($action) {
 
-                case 'enable':
+            if ( is_null($action) ) {
 
-                    if ( is_null($name) ) throw new ShellException("Wrong job name");
+                $return = $this->show($name, $extensive);
 
-                    $return = $this->enable($name);
+            } else {
 
-                    break;
+                switch ($action) {
 
-                case 'disable':
+                    case 'enable':
+                    case 'ena':
 
-                    if ( is_null($name) ) throw new ShellException("Wrong job name");
+                        if ( is_null($name) ) throw new ShellException("Wrong job name");
 
-                    $return = $this->disable($name);
+                        $return = $this->enable($name);
 
-                    break;
+                        break;
 
-                case 'add':
+                    case 'disable':
+                    case 'dis':
 
-                    if ( is_null($name) || is_null($expression) || is_null($task) ) {
+                        if ( is_null($name) ) throw new ShellException("Wrong job name");
 
-                        throw new ShellException("Wrong job definition");
+                        $return = $this->disable($name);
 
-                    }
+                        break;
 
-                    $return = $this->add($name, $expression, $task, $description, $parameters, $enable);
+                    case 'add':
 
-                    break;
+                        if ( is_null($name) || is_null($expression) || is_null($task) ) {
 
-                case 'remove':
+                            throw new ShellException("Wrong job definition");
 
-                    if ( is_null($name) ) throw new ShellException("Wrong job name");
+                        }
 
-                    $return = $this->remove($name);
+                        $return = $this->add($name, $expression, $task, $description, $parameters, $enable);
 
-                    break;
+                        break;
 
-                case 'show':
-                default:
+                    case 'remove':
+                    case 'rem':
+                    case 'delete':
+                    case 'del':
 
-                    $return = $this->show($name, $extensive);
+                        if ( is_null($name) ) throw new ShellException("Wrong job name");
 
-                    break;
+                        $return = $this->remove($name);
+
+                        break;
+
+                    case 'show':
+                    case 'sh':
+
+                        $return = $this->show($name, $extensive);
+
+                    default:
+
+                        throw new ShellException("Unknown action: ".$action);
+
+                        //$return = $this->show($name, $extensive);
+
+                        break;
+
+                }
 
             }
 
@@ -214,7 +233,7 @@ class Jobs extends AbstractCommand {
 
         try {
             
-            $result = SourceJobs::add($expression, $name, $task, $parameters, $enable);
+            $result = SourceJobs::add($expression, $name, $task, $description, $parameters, $enable);
 
         } catch (Exception $e) {
             

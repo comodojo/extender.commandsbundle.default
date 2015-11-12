@@ -2,6 +2,7 @@
 
 use \Comodojo\Extender\TasksTable;
 use \Comodojo\Extender\Log\EcontrolLogger;
+use \Comodojo\Exception\TaskException;
 use \Exception;
 
 class Execute {
@@ -45,6 +46,10 @@ class Execute {
             $logger->info("Running the task");
 
             $result = $thetask->start();
+        
+        } catch (TaskException $te) {
+        
+            return array($pid, $name, false, $start_timestamp, $te->getEndTimestamp(), $te->getMessage(), $id, $te->getWorklogId());
         
         } catch (Exception $e) {
         

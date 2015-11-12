@@ -271,7 +271,7 @@ class Logs extends AbstractCommand {
             
             $tbl->addRow(array("Start", $start));
             
-            $tbl->addRow(array("En d",$end));
+            $tbl->addRow(array("End",$end));
 
             $tbl->addRow(array("Total time", $total_time));
 

@@ -52,7 +52,7 @@ class Execute extends AbstractCommand {
             $wid,
             $this->color->convert($success ? "%gYES%n" : "%rNO%n"),
             $this->color->convert($success ? "%g".$result."%n" : "%r".$result."%n"),
-            $success ? ($end_timestamp-$start_timestamp) : "--"
+            empty($end_timestamp) ? "--" : ($end_timestamp-$start_timestamp)
         ));
 
         return $tbl->getTable();

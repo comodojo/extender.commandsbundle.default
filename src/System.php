@@ -260,7 +260,7 @@ class System {
 
     static private function pushUsrEvent($signal, $lockfile) {
     
-        $pid = @file_get_contents($lockfile);
+        $pid = @file_get_contents(EXTENDER_CACHE_FOLDER.$lockfile);
 
         if ( $pid === false ) throw new Exception("Extender not running or not in daemon mode");
 
