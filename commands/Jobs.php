@@ -87,8 +87,6 @@ class Jobs extends AbstractCommand {
 
                         throw new ShellException("Unknown action: ".$action);
 
-                        //$return = $this->show($name, $extensive);
-
                         break;
 
                 }

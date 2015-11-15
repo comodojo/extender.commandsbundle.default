@@ -6,15 +6,19 @@ use \Exception;
 
 class Logs {
 
-    public static function filterByWid($filter) {
+    public static function filterByWid($filter, $extra) {
 
         if ( empty($filter) || !is_int($filter) ) throw new Exception("Invalid Worklog ID");
 
         try{
 
-            $data = self::getDatabase()
+            $db = self::getDatabase()
                 ->where("id","=",$filter)
-                ->get();
+                ->orderBy("id","DESC");
+            
+            if ( is_null($extra) ) $data = $db->get();
+
+            else $data = $db->get($extra);
 
         } catch (Exception $e) {
 
@@ -35,7 +39,8 @@ class Logs {
         try{
 
             $db = self::getDatabase()
-                ->where("jobid","=",$filter);
+                ->where("jobid","=",$filter)
+                ->orderBy("id","DESC");
 
             if ( is_null($extra) ) $data = $db->get();
 

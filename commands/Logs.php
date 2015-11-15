@@ -19,39 +19,48 @@ class Logs extends AbstractCommand {
         $extensive = $this->getOption("extensive");
 
         try {
+
+            if ( is_null($action) ) {
+
+                $return = $this->show($extensive);
+
+            } else {
             
-            switch ($action) {
+                switch ($action) {
 
-                case 'wid':
+                    case 'wid':
+                    case 'id':
 
-                    $return = $this->byWid($filter, $extensive);
+                        $return = $this->byWid($filter, $extra, $extensive);
 
-                    break;
+                        break;
 
-                case 'jid':
+                    case 'jid':
+                    case 'job':
 
-                    $return = $this->byJid($filter, $extra, $extensive);
+                        $return = $this->byJid($filter, $extra, $extensive);
 
-                    break;
+                        break;
 
-                case 'time':
+                    case 'time':
 
-                    $return = $this->byTime($filter, $extra, $extensive);
+                        $return = $this->byTime($filter, $extra, $extensive);
 
-                    break;
+                        break;
 
-                case 'limit':
+                    case 'limit':
 
-                    $return = $this->byLimit($filter, $extra, $extensive);
+                        $return = $this->byLimit($filter, $extra, $extensive);
 
-                    break;
+                        break;
 
-                case 'show':
-                default:
+                    default:
 
-                    $return = $this->show($extensive);
+                        throw new ShellException("Unknown action: ".$action);
 
-                    break;
+                        break;
+
+                }
 
             }
 
@@ -69,11 +78,11 @@ class Logs extends AbstractCommand {
 
     }
 
-    private function byWid($filter, $extensive) {
+    private function byWid($filter, $extra, $extensive) {
 
         try {
 
-            $data = SourceLogs::filterByWid(intval($filter));
+            $data = SourceLogs::filterByWid(intval($filter), intval($extra));
 
         } catch (DatabaseException $de) {
 
@@ -185,6 +194,7 @@ class Logs extends AbstractCommand {
 
         $tbl->setHeaders(array(
             "ID",
+            "JID",
             "Status",
             "Name",
             "Start",
@@ -206,10 +216,13 @@ class Logs extends AbstractCommand {
 
             $id = $color->convert("%g".$worklog["id"]."%n");
 
-            $name = $color->convert("%y".$worklog["id"]."%n");
+            $jid = $color->convert("%y".(empty($worklog["jobid"]) ? "-" : $worklog["jobid"])."%n");
+
+            $name = $color->convert("%y".$worklog["name"]."%n");
 
             $tbl->addRow(array(
                 $id,
+                $jid,
                 $status,
                 $name,
                 $start,
