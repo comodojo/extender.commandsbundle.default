@@ -187,7 +187,7 @@ class Jobs extends AbstractCommand {
 
             $tbl->addRow(array("Parameters",var_export(unserialize($job["params"]), true)));
 
-            $return .= $tbl->getTable()."\n\n";
+            $return .= $tbl->getTable()."\n";
 
         }
 

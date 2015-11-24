@@ -85,7 +85,7 @@ class Tasks extends AbstractCommand {
 
             $tbl->addRow(array("Description", empty($parameters["description"]) ? "No description available" : $parameters["description"] ));
 
-            $return .= $tbl->getTable()."\n\n";
+            $return .= $tbl->getTable()."\n";
 
         }
 
