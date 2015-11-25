@@ -28,6 +28,12 @@ class Logs extends AbstractCommand {
 
                 switch ($action) {
 
+                    case 'show':
+
+                        $return = $this->show($extensive);
+
+                        break;
+
                     case 'wid':
                     case 'id':
 
