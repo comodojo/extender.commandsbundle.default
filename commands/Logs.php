@@ -25,7 +25,7 @@ class Logs extends AbstractCommand {
                 $return = $this->show($extensive);
 
             } else {
-            
+
                 switch ($action) {
 
                     case 'wid':
@@ -65,11 +65,11 @@ class Logs extends AbstractCommand {
             }
 
         } catch (ShellException $se) {
-            
+
             throw $se;
 
         } catch (Exception $e) {
-            
+
             throw $e;
 
         }
@@ -120,9 +120,15 @@ class Logs extends AbstractCommand {
 
     private function byTime($filter, $extra, $extensive) {
 
+        $start = strtotime($filter);
+
+        $end = strtotime($extra);
+
+        if ( $start === false || ( !empty($extra) && $end === false ) ) throw new Exception("Invalid date filter");
+
         try {
 
-            $data = SourceLogs::filterByTime(intval($filter), intval($extra));
+            $data = SourceLogs::filterByTime($start, $end);
 
         } catch (DatabaseException $de) {
 
@@ -273,7 +279,7 @@ class Logs extends AbstractCommand {
             $tbl->addRow(array("Name", $name));
 
             $tbl->addSeparator();
-            
+
             $tbl->addRow(array("Status", $status));
 
             $tbl->addRow(array("PID", $pid));
@@ -281,9 +287,9 @@ class Logs extends AbstractCommand {
             $tbl->addRow(array("Task", $task));
 
             $tbl->addSeparator();
-            
+
             $tbl->addRow(array("Start", $start));
-            
+
             $tbl->addRow(array("End",$end));
 
             $tbl->addRow(array("Total time", $total_time));
@@ -305,24 +311,24 @@ class Logs extends AbstractCommand {
     private static function filterStatus($color, $status) {
 
         switch ($status) {
-            
+
             case 'FINISHED':
 
                 $return = $color->convert("%g".$status."%n");
-            
+
                 break;
 
             case 'RUNNING':
 
                 $return = $color->convert("%y".$status."%n");
-            
+
                 break;
-            
+
             case 'ERROR':
             default:
 
                 $return = $color->convert("%r".$status."%n");
-            
+
                 break;
 
         }

@@ -15,7 +15,7 @@ class Logs {
             $db = self::getDatabase()
                 ->where("id","=",$filter)
                 ->orderBy("id","DESC");
-            
+
             if ( is_null($extra) ) $data = $db->get();
 
             else $data = $db->get($extra);
@@ -25,7 +25,7 @@ class Logs {
             throw $e;
 
         }
-        
+
         return $data->getData();
 
     }
@@ -51,7 +51,7 @@ class Logs {
             throw $e;
 
         }
-        
+
         return $data->getData();
 
     }
@@ -60,21 +60,32 @@ class Logs {
 
         if ( empty($filter) || !self::validateTimestamp($filter) ) throw new Exception("Invalid start time reference");
 
-        if ( empty($extra) || !self::validateTimestamp($extra) ) throw new Exception("Invalid end time reference");
+        if ( !empty($extra) && !self::validateTimestamp($extra) ) throw new Exception("Invalid end time reference");
 
         try{
 
-            $data = self::getDatabase()
-                ->orderBy("id","DESC")
-                ->where('start', 'BETWEEN', array($filter,$extra))
-                ->get();
+            $db = self::getDatabase()->orderBy("id","DESC");
+
+            if ( empty($extra) ) {
+
+                $end = mktime(23, 59, 59, date("m", $filter), date("d", $filter), date("Y", $filter));
+
+                $db->where('start', 'BETWEEN', array($filter,$end));
+
+            } else {
+
+                $db->where('start', 'BETWEEN', array($filter,$extra));
+
+            }
+
+            $data = $db->get();
 
         } catch (Exception $e) {
 
             throw $e;
 
         }
-        
+
         return $data->getData();
 
     }
@@ -99,7 +110,7 @@ class Logs {
             throw $e;
 
         }
-        
+
         return $data->getData();
 
     }
@@ -117,14 +128,14 @@ class Logs {
             throw $e;
 
         }
-        
+
         return $data->getData();
 
     }
 
 
     private static function getDatabase() {
-        
+
         try{
 
             $db = new EnhancedDatabase(
@@ -149,9 +160,9 @@ class Logs {
             throw $e;
 
         }
-        
+
         return $db;
-        
+
     }
 
 
@@ -159,12 +170,12 @@ class Logs {
      * Checks if a string is a valid timestamp.
      *
      * @param  string $timestamp Timestamp to validate.
-     * 
+     *
      * @return bool
      */
     private static function validateTimestamp($timestamp) {
 
-        $check = (is_int($timestamp) OR is_float($timestamp))
+        $check = (is_int($timestamp) || is_float($timestamp))
             ? $timestamp
             : (string) (int) $timestamp;
 
