@@ -4,6 +4,27 @@ use \Comodojo\Extender\CommandSource\System as SourceSystem;
 use \Comodojo\Exception\ShellException;
 use \Exception;
 
+/**
+ * @package     Comodojo extender commands
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
+ * @license     GPL-3.0+
+ *
+ * LICENSE:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 class System extends AbstractCommand {
 
     public function execute() {
@@ -15,7 +36,7 @@ class System extends AbstractCommand {
         $action = $this->getArgument("action");
 
         try {
-            
+
             switch ($action) {
 
                 case 'status':
@@ -47,7 +68,7 @@ class System extends AbstractCommand {
                     $return = $this->resume();
 
                     break;
-                
+
                 default:
 
                     $return = $this->color->convert("\n%yInvalid action ".$action."%n");
@@ -57,11 +78,11 @@ class System extends AbstractCommand {
             }
 
         } catch (ShellException $se) {
-            
+
             throw $se;
 
         } catch (Exception $e) {
-            
+
             throw $e;
 
         }
@@ -133,7 +154,7 @@ class System extends AbstractCommand {
     private function status() {
 
         list($pid, $status, $queue) = SourceSystem::getStatus();
-        
+
         $return = "\n *** Extender Status Resume *** \n";
         $return .= "  ------------------------------ \n\n";
 
@@ -162,11 +183,11 @@ class System extends AbstractCommand {
     private function pause() {
 
         try {
-            
+
             $pid = SourceSystem::pause();
 
         } catch (Exception $se) {
-            
+
             throw $se;
 
         }
@@ -178,11 +199,11 @@ class System extends AbstractCommand {
     private function resume() {
 
         try {
-            
+
             $pid = SourceSystem::resume();
 
         } catch (Exception $se) {
-            
+
             throw $se;
 
         }
@@ -202,7 +223,7 @@ class System extends AbstractCommand {
             try {
 
                 $this->logger->info("Truncating database");
-                
+
                 SourceSystem::emptyDatabase();
 
             } catch (Exception $se) {

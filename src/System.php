@@ -6,6 +6,27 @@ use \Comodojo\Database\QueryBuilder\Column;
 use \Comodojo\Exception\DatabaseException;
 use \Exception;
 
+/**
+ * @package     Comodojo extender commands
+ * @author      Marco Giovinazzi <marco.giovinazzi@comodojo.org>
+ * @license     GPL-3.0+
+ *
+ * LICENSE:
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
 class System {
 
     private static $lockfile = "extender.pid";
@@ -42,11 +63,11 @@ class System {
         $queuefile = EXTENDER_CACHE_FOLDER.self::$queuefile;
 
         try {
-            
+
             $return = self::readStatus( $lockfile, $statusfile, $queuefile );
 
         } catch (Exception $e) {
-            
+
             throw new Exception("Unable to read status file (maybe extender stopped?)");
 
         }
@@ -60,11 +81,11 @@ class System {
         if ( Checks::signals() === false ) throw new Exception("This version of PHP does not support pnctl");
 
         try {
-            
+
             $pid = self::pushUsrEvent(SIGTSTP, self::$lockfile);
 
         } catch (Exception $e) {
-         
+
             throw $e;
 
         }
@@ -78,11 +99,11 @@ class System {
         if ( Checks::signals() === false ) throw new Exception("This version of PHP does not support pnctl");
 
         try {
-            
+
             $pid = self::pushUsrEvent(SIGCONT, self::$lockfile);
 
         } catch (Exception $e) {
-            
+
             throw $e;
 
         }
@@ -147,10 +168,10 @@ class System {
             unset($db);
 
             throw new ShellException("Database error: ".$de->getMessage());
-            
+
         }
 
-        unset($db);            
+        unset($db);
 
     }
 
@@ -180,7 +201,7 @@ class System {
             unset($db);
 
             throw new ShellException("Database error: ".$de->getMessage());
-            
+
         }
 
         unset($db);
@@ -207,7 +228,7 @@ class System {
             unset($db);
 
             return false;
-            
+
         }
 
         unset($db);
@@ -218,7 +239,7 @@ class System {
 
     static private function readStatus($lockfile, $statusfile, $queuefile) {
 
-        set_error_handler( 
+        set_error_handler(
 
             function($severity, $message, $file, $line) {
 
@@ -229,15 +250,15 @@ class System {
         );
 
         try {
-        
+
             $lock = file_get_contents($lockfile);
-        
+
             $status = file_get_contents($statusfile);
 
             $queue = file_get_contents($queuefile);
 
         } catch (Exception $se) {
-            
+
             throw $se;
 
         }
@@ -256,10 +277,10 @@ class System {
             unserialize($queue)
         );
 
-    } 
+    }
 
     static private function pushUsrEvent($signal, $lockfile) {
-    
+
         $pid = @file_get_contents(EXTENDER_CACHE_FOLDER.$lockfile);
 
         if ( $pid === false ) throw new Exception("Extender not running or not in daemon mode");
