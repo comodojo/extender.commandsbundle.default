@@ -4,6 +4,7 @@ use \Comodojo\Extender\Checks;
 use \Comodojo\Database\EnhancedDatabase;
 use \Comodojo\Database\QueryBuilder\Column;
 use \Comodojo\Exception\DatabaseException;
+use \Comodojo\Exception\ShellException;
 use \Exception;
 
 /**

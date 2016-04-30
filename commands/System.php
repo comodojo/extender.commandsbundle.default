@@ -244,7 +244,7 @@ class System extends AbstractCommand {
 
             SourceSystem::installDatabase();
 
-        } catch (Exception $se) {
+        } catch (Exception $e) {
 
             throw $e;
 
